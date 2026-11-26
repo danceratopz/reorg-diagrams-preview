@@ -1,0 +1,3679 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The Ethereum Execution Layer Specifications and Tests">
+      
+      
+      
+        <link rel="canonical" href="https://specs.ethereum.foundation/docs/execution-specs/tests/reorg/test_depth_matrix/test_side_chain_reorg_depth_tuned/">
+      
+      
+      
+        <link rel="prev" href="../test_side_chain_reorg_depth_default/">
+      
+      
+        <link rel="next" href="../../test_fork_boundary_reorg/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../img/eth-diamond-orange.svg">
+      <meta name="generator" content="zensical-0.1.0">
+    
+    
+      
+        <title>test_side_chain_reorg_depth_tuned - Ethereum Execution Specs</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../../../assets/stylesheets/modern/main.4ab2de0c.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    
+      <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.min.css">
+    
+      <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css">
+    
+      <link rel="stylesheet" href="../../../../vendor/glightbox/glightbox.min.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/custom.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/reorg_diagram.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  <meta property="og:type" content="website" />
+<meta property="og:title" content="&lt;code&gt;test_side_chain_reorg_depth_tuned&lt;/code&gt; - Ethereum Execution Specs" />
+<meta property="og:description" content="The Ethereum Execution Layer Specifications and Tests" />
+<meta property="og:image" content="https://specs.ethereum.foundation/docs/execution-specs/assets/images/social/tests/reorg/test_depth_matrix/test_side_chain_reorg_depth_tuned.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://specs.ethereum.foundation/docs/execution-specs/tests/reorg/test_depth_matrix/test_side_chain_reorg_depth_tuned/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="&lt;code&gt;test_side_chain_reorg_depth_tuned&lt;/code&gt; - Ethereum Execution Specs" />
+<meta property="twitter:description" content="The Ethereum Execution Layer Specifications and Tests" />
+<meta property="twitter:image" content="https://specs.ethereum.foundation/docs/execution-specs/assets/images/social/tests/reorg/test_depth_matrix/test_side_chain_reorg_depth_tuned.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Ethereum Execution Specs" class="md-header__button md-logo" aria-label="Ethereum Execution Specs" data-md-component="logo">
+      
+  <img src="../../../../img/eth-diamond-orange.svg" alt="Ethereum Execution Specs">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigation</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ethereum Execution Specs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              <code>test_side_chain_reorg_depth_tuned</code>
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Search</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/ethereum/execution-specs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    execution-specs
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../getting_started/installation/" class="md-tabs__link">
+          
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../specs/" class="md-tabs__link">
+          
+  
+  Specifications
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../consensus_tests/" class="md-tabs__link">
+          
+  
+  Consensus Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../dev/" class="md-tabs__link">
+          
+  
+  Developer Doc
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../library/" class="md-tabs__link">
+          
+  
+  Library Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../" class="md-tabs__link">
+          
+  
+  Test Case Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Ethereum Execution Specs" class="md-nav__button md-logo" aria-label="Ethereum Execution Specs" data-md-component="logo">
+      
+  <img src="../../../../img/eth-diamond-orange.svg" alt="Ethereum Execution Specs">
+
+    </a>
+    Ethereum Execution Specs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethereum/execution-specs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    execution-specs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../getting_started/installation/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Getting Started
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../specs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Specifications
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../consensus_tests/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Consensus Tests
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../dev/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Developer Doc
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../library/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Library Reference
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Case Reference
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_7">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Test Case Reference
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../benchmark/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Benchmark
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../bogota/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Bogota
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../amsterdam/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Amsterdam
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../osaka/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Osaka
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../prague/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Prague
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../cancun/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Cancun
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../shanghai/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Shanghai
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../paris/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Paris
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../london/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  London
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../berlin/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Berlin
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../istanbul/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Istanbul
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../constantinople/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Constantinople
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../byzantium/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Byzantium
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../spurious_dragon/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spurious Dragon
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../tangerine_whistle/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Tangerine Whistle
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../homestead/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Homestead
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../frontier/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Frontier
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../mpt/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Mpt
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_20" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Reorg
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7_20" id="__nav_7_20_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_20_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_7_20">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Reorg
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Readme
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_20_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Depth Matrix
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7_20_3" id="__nav_7_20_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_20_3_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_7_20_3">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Test Depth Matrix
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_canonical_ancestor_reorg_depth_default/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_canonical_ancestor_reorg_depth_default</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_side_chain_reorg_depth_default/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_side_chain_reorg_depth_default</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_side_chain_reorg_depth_tuned</code>
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_side_chain_reorg_depth_tuned</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        test_side_chain_reorg_depth_tuned
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Scenario
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parametrized-test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Parametrized Test Cases
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_fork_boundary_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Fork Boundary Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_forkchoice_behaviour/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Forkchoice Behaviour
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_forkchoice_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Forkchoice Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_invalid_payloads_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test INVALID Payloads Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_payload_building_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Payload Building Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_peer_sync_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Peer Sync Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_selfdestruct_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test SELFDESTRUCT Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_tx_receipts_logs_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Tx Receipts Logs Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        test_side_chain_reorg_depth_tuned
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Scenario
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parametrized-test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Parametrized Test Cases
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../../../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Test Case Reference
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Reorg
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Test Depth Matrix
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/ethereum/execution-specs/edit/forks/bogota/tests/reorg/test_depth_matrix.py" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+    <a href="https://github.com/ethereum/execution-specs/blob/forks/bogota/tests/reorg/test_depth_matrix.py" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code-2" viewBox="0 0 24 24"><path d="M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35"/><path d="M14 2v5a1 1 0 0 0 1 1h5M5 16l-3 3 3 3M9 22l3-3-3-3"/></svg>
+    </a>
+  
+
+
+<h1 id="test_side_chain_reorg_depth_tuned"><code>test_side_chain_reorg_depth_tuned()</code><a class="headerlink" href="#test_side_chain_reorg_depth_tuned" title="Permanent link">&para;</a></h1>
+<p>Documentation for <a href="https://github.com/ethereum/execution-specs/blob/67e8bb5053f4ea7f1d843da1520484170766eb9a/tests/reorg/test_depth_matrix.py#L226"><code>tests/reorg/test_depth_matrix.py::test_side_chain_reorg_depth_tuned@67e8bb50</code></a>.</p>
+<div class="admonition example">
+<p class="admonition-title">Generate fixtures for these test cases for Bogota with:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">fill -v tests/reorg/test_depth_matrix.py::test_side_chain_reorg_depth_tuned --fork Bogota</span>
+</span></code></pre></div>
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned"></a>
+    <div class="doc doc-contents first">
+
+        <p>Tuned: the client is started with <code>HIVE_ENGINE_MAX_REORG_DEPTH</code> above
+the reorg depth, so the reorg must be applied. Clients without such a
+knob run their defaults here.</p>
+<p>Depths above 128 are capability probes rather than conformance
+assertions: no state retention depth is specified, so a client that
+cannot execute the side chain may answer its payloads and the FCU to
+its tip with SYNCING, accepted as disputed.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>tests/reorg/test_depth_matrix.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-226">226</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-227">227</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-228">228</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-229">229</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-230">230</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-231">231</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-232">232</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-233">233</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-234">234</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-235">235</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-236">236</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-237">237</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-238">238</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-239">239</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-240">240</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-241">241</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-242">242</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-243">243</a></span>
+<span class="normal"><a href="#tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-244">244</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-226"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-226" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-226"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">valid_from</span><span class="p">(</span><span class="s2">"Cancun"</span><span class="p">)</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-227"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-227" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-227"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"depth"</span><span class="p">,</span> <span class="p">[</span><span class="mi">64</span><span class="p">,</span> <span class="mi">129</span><span class="p">])</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-228"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-228" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-228"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_side_chain_reorg_depth_tuned</span><span class="p">(</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-229"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-229" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-229"></a>    <span class="n">reorg_test</span><span class="p">:</span> <span class="n">ReorgTestFiller</span><span class="p">,</span> <span class="n">pre</span><span class="p">:</span> <span class="n">Alloc</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-230"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-230" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-230"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-231"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-231" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-231"></a><span class="w">    </span><span class="sd">"""</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-232"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-232" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-232"></a><span class="sd">    Tuned: the client is started with ``HIVE_ENGINE_MAX_REORG_DEPTH`` above</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-233"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-233" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-233"></a><span class="sd">    the reorg depth, so the reorg must be applied. Clients without such a</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-234"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-234" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-234"></a><span class="sd">    knob run their defaults here.</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-235"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-235" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-235"></a>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-236"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-236" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-236"></a><span class="sd">    Depths above 128 are capability probes rather than conformance</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-237"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-237" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-237"></a><span class="sd">    assertions: no state retention depth is specified, so a client that</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-238"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-238" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-238"></a><span class="sd">    cannot execute the side chain may answer its payloads and the FCU to</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-239"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-239" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-239"></a><span class="sd">    its tip with SYNCING, accepted as disputed.</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-240"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-240" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-240"></a><span class="sd">    """</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-241"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-241" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-241"></a>    <span class="n">probe</span> <span class="o">=</span> <span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">128</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-242"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-242" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-242"></a>    <span class="n">blocks</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="n">two_branches</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">probe</span><span class="o">=</span><span class="n">probe</span><span class="p">)</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-243"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-243" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-243"></a>    <span class="n">steps</span> <span class="o">+=</span> <span class="n">matrix_steps</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">applied_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">probe</span><span class="o">=</span><span class="n">probe</span><span class="p">)</span>
+</span><span id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__span-0-244"><a id="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-244" name="tests.reorg.test_depth_matrix.test_side_chain_reorg_depth_tuned--source--__codelineno-0-244"></a>    <span class="n">reorg_test</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="n">pre</span><span class="p">,</span> <span class="n">blocks</span><span class="o">=</span><span class="n">blocks</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">,</span> <span class="n">min_reorg_depth</span><span class="o">=</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">8</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><h2 id="scenario">Scenario<a class="headerlink" href="#scenario" title="Permanent link">&para;</a></h2>
+<p>Generated from the fixtures filled for Bogota: the block DAG, then each step with the outcomes it accepts and, on the right, the DAG as the fixture expects the client to see it after the step. Hashes and most fork-specific values are left out, and the script can differ on other forks; the <a href="../../../../running_tests/test_formats/blockchain_test_engine_reorg/">fixture format</a> explains the steps and outcomes.</p>
+<div class="rg-legend"><span><i class="rg-sw rg-sw--genesis"></i>genesis</span><span><i class="rg-sw rg-sw--engine"></i>sent with <code>newPayload</code></span><span><i class="rg-sw rg-sw--ghost"></i>not sent yet</span><span><i class="rg-sw rg-sw--target"></i>block the step names</span><span><i class="rg-line"></i>chain of the head</span></div>
+
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">depth_129</label><label for="__tabbed_1_2">depth_64</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><div class="rg rg--wide"><div class="rg-dag"><div class="rg-dag-h">Block DAG <span class="rg-sum">260 blocks and 394 steps, with the client set to apply reorgs at least 137 blocks deep</span></div><div class="rg-scroll"><svg class="rg-svg" viewBox="0 0 501.2 152" width="501.2" height="152" role="img" aria-label="Block DAG: a1 on genesis, a2 on a1, a3 on a2, a4 on a3, a5 on a4, a6 on a5, a7 on a6, a8 on a7, a9 on a8, a10 on a9, a11 on a10, a12 on a11, a13 on a12, a14 on a13, a15 on a14, a16 on a15, a17 on a16, a18 on a17, a19 on a18, a20 on a19, a21 on a20, a22 on a21, a23 on a22, a24 on a23, a25 on a24, a26 on a25, a27 on a26, a28 on a27, a29 on a28, a30 on a29, a31 on a30, a32 on a31, a33 on a32, a34 on a33, a35 on a34, a36 on a35, a37 on a36, a38 on a37, a39 on a38, a40 on a39, a41 on a40, a42 on a41, a43 on a42, a44 on a43, a45 on a44, a46 on a45, a47 on a46, a48 on a47, a49 on a48, a50 on a49, a51 on a50, a52 on a51, a53 on a52, a54 on a53, a55 on a54, a56 on a55, a57 on a56, a58 on a57, a59 on a58, a60 on a59, a61 on a60, a62 on a61, a63 on a62, a64 on a63, a65 on a64, a66 on a65, a67 on a66, a68 on a67, a69 on a68, a70 on a69, a71 on a70, a72 on a71, a73 on a72, a74 on a73, a75 on a74, a76 on a75, a77 on a76, a78 on a77, a79 on a78, a80 on a79, a81 on a80, a82 on a81, a83 on a82, a84 on a83, a85 on a84, a86 on a85, a87 on a86, a88 on a87, a89 on a88, a90 on a89, a91 on a90, a92 on a91, a93 on a92, a94 on a93, a95 on a94, a96 on a95, a97 on a96, a98 on a97, a99 on a98, a100 on a99, a101 on a100, a102 on a101, a103 on a102, a104 on a103, a105 on a104, a106 on a105, a107 on a106, a108 on a107, a109 on a108, a110 on a109, a111 on a110, a112 on a111, a113 on a112, a114 on a113, a115 on a114, a116 on a115, a117 on a116, a118 on a117, a119 on a118, a120 on a119, a121 on a120, a122 on a121, a123 on a122, a124 on a123, a125 on a124, a126 on a125, a127 on a126, a128 on a127, a129 on a128, a130 on a129, s2 on a1, s3 on s2, s4 on s3, s5 on s4, s6 on s5, s7 on s6, s8 on s7, s9 on s8, s10 on s9, s11 on s10, s12 on s11, s13 on s12, s14 on s13, s15 on s14, s16 on s15, s17 on s16, s18 on s17, s19 on s18, s20 on s19, s21 on s20, s22 on s21, s23 on s22, s24 on s23, s25 on s24, s26 on s25, s27 on s26, s28 on s27, s29 on s28, s30 on s29, s31 on s30, s32 on s31, s33 on s32, s34 on s33, s35 on s34, s36 on s35, s37 on s36, s38 on s37, s39 on s38, s40 on s39, s41 on s40, s42 on s41, s43 on s42, s44 on s43, s45 on s44, s46 on s45, s47 on s46, s48 on s47, s49 on s48, s50 on s49, s51 on s50, s52 on s51, s53 on s52, s54 on s53, s55 on s54, s56 on s55, s57 on s56, s58 on s57, s59 on s58, s60 on s59, s61 on s60, s62 on s61, s63 on s62, s64 on s63, s65 on s64, s66 on s65, s67 on s66, s68 on s67, s69 on s68, s70 on s69, s71 on s70, s72 on s71, s73 on s72, s74 on s73, s75 on s74, s76 on s75, s77 on s76, s78 on s77, s79 on s78, s80 on s79, s81 on s80, s82 on s81, s83 on s82, s84 on s83, s85 on s84, s86 on s85, s87 on s86, s88 on s87, s89 on s88, s90 on s89, s91 on s90, s92 on s91, s93 on s92, s94 on s93, s95 on s94, s96 on s95, s97 on s96, s98 on s97, s99 on s98, s100 on s99, s101 on s100, s102 on s101, s103 on s102, s104 on s103, s105 on s104, s106 on s105, s107 on s106, s108 on s107, s109 on s108, s110 on s109, s111 on s110, s112 on s111, s113 on s112, s114 on s113, s115 on s114, s116 on s115, s117 on s116, s118 on s117, s119 on s118, s120 on s119, s121 on s120, s122 on s121, s123 on s122, s124 on s123, s125 on s124, s126 on s125, s127 on s126, s128 on s127, s129 on s128, s130 on s129, s131 on s130"><path class="rg-e" d="M68.9 34H88.9"/><path class="rg-e" d="M134.9 34H154.9"/><path class="rg-e" d="M200.9 34H220.9"/><path class="rg-e" d="M297.2 34H317.2"/><path class="rg-e" d="M363.2 34H383.2"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e" d="M200.9 102H220.9"/><path class="rg-e" d="M297.2 102H317.2"/><path class="rg-e" d="M363.2 102H383.2"/><path class="rg-e" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="259.05" y="38">a3 … a128</text><text class="rg-t" x="340.2" y="38">a129</text><text class="rg-t" x="406.2" y="38">a130</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="259.05" y="106">s3 … s128</text><text class="rg-t" x="340.2" y="106">s129</text><text class="rg-t" x="406.2" y="106">s130</text><text class="rg-t" x="472.2" y="106">s131</text><text class="rg-a" x="37.45" y="148">0</text><text class="rg-a" x="111.9" y="148">1</text><text class="rg-a" x="177.9" y="148">2</text><text class="rg-a" x="259.05" y="148">3–128</text><text class="rg-a" x="340.2" y="148">129</text><text class="rg-a" x="406.2" y="148">130</text><text class="rg-a" x="472.2" y="148">131</text></svg></div></div><ol class="rg-steps"><li class="rg-step"><div class="rg-call"><span class="rg-n">1</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">a1</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head genesis"><path class="rg-e" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M297.2 34H317.2"/><path class="rg-e rg-e--ghost" d="M363.2 34H383.2"/><path class="rg-e rg-e--ghost" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M297.2 102H317.2"/><path class="rg-e rg-e--ghost" d="M363.2 102H383.2"/><path class="rg-e rg-e--ghost" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-h" x="37.45" y="17">head</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="259.05" y="38">a3 … a128</text><text class="rg-t rg-t--ghost" x="340.2" y="38">a129</text><text class="rg-t rg-t--ghost" x="406.2" y="38">a130</text><text class="rg-t rg-t--ghost" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="259.05" y="106">s3 … s128</text><text class="rg-t rg-t--ghost" x="340.2" y="106">s129</text><text class="rg-t rg-t--ghost" x="406.2" y="106">s130</text><text class="rg-t rg-t--ghost" x="472.2" y="106">s131</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">2</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a1</b> <span class="rg-sep">·</span> safe <span class="rg-none">zero</span> <span class="rg-sep">·</span> finalized <span class="rg-none">zero</span><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a1</b> <span class="rg-sep">·</span> then latest <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head a1"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M297.2 34H317.2"/><path class="rg-e rg-e--ghost" d="M363.2 34H383.2"/><path class="rg-e rg-e--ghost" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M297.2 102H317.2"/><path class="rg-e rg-e--ghost" d="M363.2 102H383.2"/><path class="rg-e rg-e--ghost" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-h" x="111.9" y="17">head</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="259.05" y="38">a3 … a128</text><text class="rg-t rg-t--ghost" x="340.2" y="38">a129</text><text class="rg-t rg-t--ghost" x="406.2" y="38">a130</text><text class="rg-t rg-t--ghost" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="259.05" y="106">s3 … s128</text><text class="rg-t rg-t--ghost" x="340.2" y="106">s129</text><text class="rg-t rg-t--ghost" x="406.2" y="106">s130</text><text class="rg-t rg-t--ghost" x="472.2" y="106">s131</text></svg></div></div></li><li class="rg-fold">⋮ steps 3 to 258 repeat the same calls for 128 more blocks, <b class="rg-l">a2</b> to <b class="rg-l">a129</b></li><li class="rg-step"><div class="rg-call"><span class="rg-n">259</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">a130</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">a130</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head a129"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M297.2 34H317.2"/><path class="rg-e" d="M363.2 34H383.2"/><path class="rg-e rg-e--ghost" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M297.2 102H317.2"/><path class="rg-e rg-e--ghost" d="M363.2 102H383.2"/><path class="rg-e rg-e--ghost" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="259.05" y="38">a3 … a128</text><text class="rg-t" x="340.2" y="38">a129</text><text class="rg-h" x="340.2" y="17">head</text><text class="rg-t" x="406.2" y="38">a130</text><text class="rg-t rg-t--ghost" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="259.05" y="106">s3 … s128</text><text class="rg-t rg-t--ghost" x="340.2" y="106">s129</text><text class="rg-t rg-t--ghost" x="406.2" y="106">s130</text><text class="rg-t rg-t--ghost" x="472.2" y="106">s131</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">260</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a130</b> <span class="rg-sep">·</span> safe <span class="rg-none">zero</span> <span class="rg-sep">·</span> finalized <span class="rg-none">zero</span><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a130</b> <span class="rg-sep">·</span> then latest <b class="rg-l">a130</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head a130"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M297.2 34H317.2"/><path class="rg-e rg-e--canon" d="M363.2 34H383.2"/><path class="rg-e rg-e--ghost" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M297.2 102H317.2"/><path class="rg-e rg-e--ghost" d="M363.2 102H383.2"/><path class="rg-e rg-e--ghost" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="259.05" y="38">a3 … a128</text><text class="rg-t" x="340.2" y="38">a129</text><text class="rg-t" x="406.2" y="38">a130</text><text class="rg-h" x="406.2" y="17">head</text><text class="rg-t rg-t--ghost" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="259.05" y="106">s3 … s128</text><text class="rg-t rg-t--ghost" x="340.2" y="106">s129</text><text class="rg-t rg-t--ghost" x="406.2" y="106">s130</text><text class="rg-t rg-t--ghost" x="472.2" y="106">s131</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">261</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">s2</b><div class="rg-expect"><span class="rg-expect-h">accepts the first match of</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">s2</b></span></li><li class="rg-o rg-o--open"><b class="rg-o-status">ACCEPTED</b> <code class="rg-o-id">accepted</code><span class="rg-o-more">latestValidHash null</span></li><li class="rg-o rg-o--open"><b class="rg-o-status">SYNCING</b> <span class="rg-tag">disputed</span> <code class="rg-o-id">syncing</code><span class="rg-o-more">latestValidHash null</span><span class="rg-why">execution-apis: no state retention depth is specified; go-ethereum keeps 128 state layers and cannot execute a side chain forking off below them</span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head a130"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M297.2 34H317.2"/><path class="rg-e rg-e--canon" d="M363.2 34H383.2"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M297.2 102H317.2"/><path class="rg-e rg-e--ghost" d="M363.2 102H383.2"/><path class="rg-e rg-e--ghost" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="259.05" y="38">a3 … a128</text><text class="rg-t" x="340.2" y="38">a129</text><text class="rg-t" x="406.2" y="38">a130</text><text class="rg-h" x="406.2" y="17">head</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="259.05" y="106">s3 … s128</text><text class="rg-t rg-t--ghost" x="340.2" y="106">s129</text><text class="rg-t rg-t--ghost" x="406.2" y="106">s130</text><text class="rg-t rg-t--ghost" x="472.2" y="106">s131</text></svg></div></div></li><li class="rg-fold">⋮ steps 262 to 389 repeat the same calls for 128 more blocks, <b class="rg-l">s3</b> to <b class="rg-l">s130</b></li><li class="rg-step"><div class="rg-call"><span class="rg-n">390</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">s131</b><div class="rg-expect"><span class="rg-expect-h">accepts the first match of</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">s131</b></span></li><li class="rg-o rg-o--open"><b class="rg-o-status">ACCEPTED</b> <code class="rg-o-id">accepted</code><span class="rg-o-more">latestValidHash null</span></li><li class="rg-o rg-o--open"><b class="rg-o-status">SYNCING</b> <span class="rg-tag">disputed</span> <code class="rg-o-id">syncing</code><span class="rg-o-more">latestValidHash null</span><span class="rg-why">execution-apis: no state retention depth is specified; go-ethereum keeps 128 state layers and cannot execute a side chain forking off below them</span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head a130"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M297.2 34H317.2"/><path class="rg-e rg-e--canon" d="M363.2 34H383.2"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e" d="M200.9 102H220.9"/><path class="rg-e" d="M297.2 102H317.2"/><path class="rg-e" d="M363.2 102H383.2"/><path class="rg-e" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="259.05" y="38">a3 … a128</text><text class="rg-t" x="340.2" y="38">a129</text><text class="rg-t" x="406.2" y="38">a130</text><text class="rg-h" x="406.2" y="17">head</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="259.05" y="106">s3 … s128</text><text class="rg-t" x="340.2" y="106">s129</text><text class="rg-t" x="406.2" y="106">s130</text><text class="rg-t" x="472.2" y="106">s131</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">391</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">s131</b> <span class="rg-sep">·</span> safe <b class="rg-l">a1</b> <span class="rg-sep">·</span> finalized <b class="rg-l">a1</b><div class="rg-expect"><span class="rg-expect-h">accepts the first match of</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">s131</b> <span class="rg-sep">·</span> then latest <b class="rg-l">s131</b>, safe <b class="rg-l">a1</b>, finalized <b class="rg-l">a1</b></span></li><li class="rg-o rg-o--open"><b class="rg-o-status">SYNCING</b> <span class="rg-tag">disputed</span> <code class="rg-o-id">syncing</code><span class="rg-o-more">latestValidHash null <span class="rg-sep">·</span> then latest <b class="rg-l">a130</b></span><span class="rg-why">execution-apis: no state retention depth is specified; go-ethereum keeps 128 state layers and cannot execute a side chain forking off below them</span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><div class="rg-cap">after <code>applied</code></div><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head s131, safe a1, finalized a1"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e" d="M134.9 34H154.9"/><path class="rg-e" d="M200.9 34H220.9"/><path class="rg-e" d="M297.2 34H317.2"/><path class="rg-e" d="M363.2 34H383.2"/><path class="rg-e rg-e--canon" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--canon" d="M200.9 102H220.9"/><path class="rg-e rg-e--canon" d="M297.2 102H317.2"/><path class="rg-e rg-e--canon" d="M363.2 102H383.2"/><path class="rg-e rg-e--canon" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-s" x="111.9" y="58">safe</text><text class="rg-s" x="111.9" y="69">finalized</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="259.05" y="38">a3 … a128</text><text class="rg-t" x="340.2" y="38">a129</text><text class="rg-t" x="406.2" y="38">a130</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="259.05" y="106">s3 … s128</text><text class="rg-t" x="340.2" y="106">s129</text><text class="rg-t" x="406.2" y="106">s130</text><text class="rg-t" x="472.2" y="106">s131</text><text class="rg-h" x="472.2" y="85">head</text></svg></div><div class="rg-frame"><div class="rg-cap">after <code>syncing</code></div><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head a130"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M297.2 34H317.2"/><path class="rg-e rg-e--canon" d="M363.2 34H383.2"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e" d="M200.9 102H220.9"/><path class="rg-e" d="M297.2 102H317.2"/><path class="rg-e" d="M363.2 102H383.2"/><path class="rg-e" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="259.05" y="38">a3 … a128</text><text class="rg-t" x="340.2" y="38">a129</text><text class="rg-t" x="406.2" y="38">a130</text><text class="rg-h" x="406.2" y="17">head</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="259.05" y="106">s3 … s128</text><text class="rg-t" x="340.2" y="106">s129</text><text class="rg-t" x="406.2" y="106">s130</text><text class="rg-t" x="472.2" y="106">s131</text></svg></div></div></li><li class="rg-note">The script goes on after <code>applied</code>; after <code>syncing</code> the test ends here.</li><li class="rg-step"><div class="rg-call"><span class="rg-n">392</span> <code class="rg-m rg-m--rpc">assertCanonical</code> height 2 is <b class="rg-l">s2</b> <span class="rg-sep">·</span> height 130 is <b class="rg-l">s130</b> <span class="rg-sep">·</span> height 131 is <b class="rg-l">s131</b></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">393</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a130</b> <span class="rg-sep">·</span> safe <b class="rg-l">a1</b> <span class="rg-sep">·</span> finalized <b class="rg-l">a1</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a130</b> <span class="rg-sep">·</span> then latest <b class="rg-l">a130</b>, safe <b class="rg-l">a1</b>, finalized <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 501.2 142" width="501.2" height="142" role="img" aria-label="State after the step: head a130, safe a1, finalized a1"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M297.2 34H317.2"/><path class="rg-e rg-e--canon" d="M363.2 34H383.2"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e" d="M200.9 102H220.9"/><path class="rg-e" d="M297.2 102H317.2"/><path class="rg-e" d="M363.2 102H383.2"/><path class="rg-e" d="M429.2 102H449.2"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="383.2" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="76.3" height="26" rx="7"><title>126 blocks</title></rect><rect class="rg-b rg-b--engine" x="317.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="383.2" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="449.2" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-s" x="111.9" y="58">safe</text><text class="rg-s" x="111.9" y="69">finalized</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="259.05" y="38">a3 … a128</text><text class="rg-t" x="340.2" y="38">a129</text><text class="rg-t" x="406.2" y="38">a130</text><text class="rg-h" x="406.2" y="17">head</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="259.05" y="106">s3 … s128</text><text class="rg-t" x="340.2" y="106">s129</text><text class="rg-t" x="406.2" y="106">s130</text><text class="rg-t" x="472.2" y="106">s131</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">394</span> <code class="rg-m rg-m--rpc">assertCanonical</code> height 2 is <b class="rg-l">a2</b> <span class="rg-sep">·</span> height 130 is <b class="rg-l">a130</b> <span class="rg-sep">·</span> height 131 is <span class="rg-none">none</span></div></li></ol></div></p>
+</div>
+<div class="tabbed-block">
+<p><div class="rg rg--wide"><div class="rg-dag"><div class="rg-dag-h">Block DAG <span class="rg-sum">130 blocks and 199 steps, with the client set to apply reorgs at least 72 blocks deep</span></div><div class="rg-scroll"><svg class="rg-svg" viewBox="0 0 494.5 152" width="494.5" height="152" role="img" aria-label="Block DAG: a1 on genesis, a2 on a1, a3 on a2, a4 on a3, a5 on a4, a6 on a5, a7 on a6, a8 on a7, a9 on a8, a10 on a9, a11 on a10, a12 on a11, a13 on a12, a14 on a13, a15 on a14, a16 on a15, a17 on a16, a18 on a17, a19 on a18, a20 on a19, a21 on a20, a22 on a21, a23 on a22, a24 on a23, a25 on a24, a26 on a25, a27 on a26, a28 on a27, a29 on a28, a30 on a29, a31 on a30, a32 on a31, a33 on a32, a34 on a33, a35 on a34, a36 on a35, a37 on a36, a38 on a37, a39 on a38, a40 on a39, a41 on a40, a42 on a41, a43 on a42, a44 on a43, a45 on a44, a46 on a45, a47 on a46, a48 on a47, a49 on a48, a50 on a49, a51 on a50, a52 on a51, a53 on a52, a54 on a53, a55 on a54, a56 on a55, a57 on a56, a58 on a57, a59 on a58, a60 on a59, a61 on a60, a62 on a61, a63 on a62, a64 on a63, a65 on a64, s2 on a1, s3 on s2, s4 on s3, s5 on s4, s6 on s5, s7 on s6, s8 on s7, s9 on s8, s10 on s9, s11 on s10, s12 on s11, s13 on s12, s14 on s13, s15 on s14, s16 on s15, s17 on s16, s18 on s17, s19 on s18, s20 on s19, s21 on s20, s22 on s21, s23 on s22, s24 on s23, s25 on s24, s26 on s25, s27 on s26, s28 on s27, s29 on s28, s30 on s29, s31 on s30, s32 on s31, s33 on s32, s34 on s33, s35 on s34, s36 on s35, s37 on s36, s38 on s37, s39 on s38, s40 on s39, s41 on s40, s42 on s41, s43 on s42, s44 on s43, s45 on s44, s46 on s45, s47 on s46, s48 on s47, s49 on s48, s50 on s49, s51 on s50, s52 on s51, s53 on s52, s54 on s53, s55 on s54, s56 on s55, s57 on s56, s58 on s57, s59 on s58, s60 on s59, s61 on s60, s62 on s61, s63 on s62, s64 on s63, s65 on s64, s66 on s65"><path class="rg-e" d="M68.9 34H88.9"/><path class="rg-e" d="M134.9 34H154.9"/><path class="rg-e" d="M200.9 34H220.9"/><path class="rg-e" d="M290.5 34H310.5"/><path class="rg-e" d="M356.5 34H376.5"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e" d="M200.9 102H220.9"/><path class="rg-e" d="M290.5 102H310.5"/><path class="rg-e" d="M356.5 102H376.5"/><path class="rg-e" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="255.7" y="38">a3 … a63</text><text class="rg-t" x="333.5" y="38">a64</text><text class="rg-t" x="399.5" y="38">a65</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="255.7" y="106">s3 … s63</text><text class="rg-t" x="333.5" y="106">s64</text><text class="rg-t" x="399.5" y="106">s65</text><text class="rg-t" x="465.5" y="106">s66</text><text class="rg-a" x="37.45" y="148">0</text><text class="rg-a" x="111.9" y="148">1</text><text class="rg-a" x="177.9" y="148">2</text><text class="rg-a" x="255.7" y="148">3–63</text><text class="rg-a" x="333.5" y="148">64</text><text class="rg-a" x="399.5" y="148">65</text><text class="rg-a" x="465.5" y="148">66</text></svg></div></div><ol class="rg-steps"><li class="rg-step"><div class="rg-call"><span class="rg-n">1</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">a1</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 494.5 142" width="494.5" height="142" role="img" aria-label="State after the step: head genesis"><path class="rg-e" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M290.5 34H310.5"/><path class="rg-e rg-e--ghost" d="M356.5 34H376.5"/><path class="rg-e rg-e--ghost" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M290.5 102H310.5"/><path class="rg-e rg-e--ghost" d="M356.5 102H376.5"/><path class="rg-e rg-e--ghost" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-h" x="37.45" y="17">head</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="255.7" y="38">a3 … a63</text><text class="rg-t rg-t--ghost" x="333.5" y="38">a64</text><text class="rg-t rg-t--ghost" x="399.5" y="38">a65</text><text class="rg-t rg-t--ghost" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="255.7" y="106">s3 … s63</text><text class="rg-t rg-t--ghost" x="333.5" y="106">s64</text><text class="rg-t rg-t--ghost" x="399.5" y="106">s65</text><text class="rg-t rg-t--ghost" x="465.5" y="106">s66</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">2</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a1</b> <span class="rg-sep">·</span> safe <span class="rg-none">zero</span> <span class="rg-sep">·</span> finalized <span class="rg-none">zero</span><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a1</b> <span class="rg-sep">·</span> then latest <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 494.5 142" width="494.5" height="142" role="img" aria-label="State after the step: head a1"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M290.5 34H310.5"/><path class="rg-e rg-e--ghost" d="M356.5 34H376.5"/><path class="rg-e rg-e--ghost" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M290.5 102H310.5"/><path class="rg-e rg-e--ghost" d="M356.5 102H376.5"/><path class="rg-e rg-e--ghost" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-h" x="111.9" y="17">head</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="255.7" y="38">a3 … a63</text><text class="rg-t rg-t--ghost" x="333.5" y="38">a64</text><text class="rg-t rg-t--ghost" x="399.5" y="38">a65</text><text class="rg-t rg-t--ghost" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="255.7" y="106">s3 … s63</text><text class="rg-t rg-t--ghost" x="333.5" y="106">s64</text><text class="rg-t rg-t--ghost" x="399.5" y="106">s65</text><text class="rg-t rg-t--ghost" x="465.5" y="106">s66</text></svg></div></div></li><li class="rg-fold">⋮ steps 3 to 128 repeat the same calls for 63 more blocks, <b class="rg-l">a2</b> to <b class="rg-l">a64</b></li><li class="rg-step"><div class="rg-call"><span class="rg-n">129</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">a65</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">a65</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 494.5 142" width="494.5" height="142" role="img" aria-label="State after the step: head a64"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M290.5 34H310.5"/><path class="rg-e" d="M356.5 34H376.5"/><path class="rg-e rg-e--ghost" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M290.5 102H310.5"/><path class="rg-e rg-e--ghost" d="M356.5 102H376.5"/><path class="rg-e rg-e--ghost" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="255.7" y="38">a3 … a63</text><text class="rg-t" x="333.5" y="38">a64</text><text class="rg-h" x="333.5" y="17">head</text><text class="rg-t" x="399.5" y="38">a65</text><text class="rg-t rg-t--ghost" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="255.7" y="106">s3 … s63</text><text class="rg-t rg-t--ghost" x="333.5" y="106">s64</text><text class="rg-t rg-t--ghost" x="399.5" y="106">s65</text><text class="rg-t rg-t--ghost" x="465.5" y="106">s66</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">130</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a65</b> <span class="rg-sep">·</span> safe <span class="rg-none">zero</span> <span class="rg-sep">·</span> finalized <span class="rg-none">zero</span><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a65</b> <span class="rg-sep">·</span> then latest <b class="rg-l">a65</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 494.5 142" width="494.5" height="142" role="img" aria-label="State after the step: head a65"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M290.5 34H310.5"/><path class="rg-e rg-e--canon" d="M356.5 34H376.5"/><path class="rg-e rg-e--ghost" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M290.5 102H310.5"/><path class="rg-e rg-e--ghost" d="M356.5 102H376.5"/><path class="rg-e rg-e--ghost" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="255.7" y="38">a3 … a63</text><text class="rg-t" x="333.5" y="38">a64</text><text class="rg-t" x="399.5" y="38">a65</text><text class="rg-h" x="399.5" y="17">head</text><text class="rg-t rg-t--ghost" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="255.7" y="106">s3 … s63</text><text class="rg-t rg-t--ghost" x="333.5" y="106">s64</text><text class="rg-t rg-t--ghost" x="399.5" y="106">s65</text><text class="rg-t rg-t--ghost" x="465.5" y="106">s66</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">131</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">s2</b><div class="rg-expect"><span class="rg-expect-h">accepts the first match of</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">s2</b></span></li><li class="rg-o rg-o--open"><b class="rg-o-status">ACCEPTED</b> <code class="rg-o-id">accepted</code><span class="rg-o-more">latestValidHash null</span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 494.5 142" width="494.5" height="142" role="img" aria-label="State after the step: head a65"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M290.5 34H310.5"/><path class="rg-e rg-e--canon" d="M356.5 34H376.5"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--ghost" d="M200.9 102H220.9"/><path class="rg-e rg-e--ghost" d="M290.5 102H310.5"/><path class="rg-e rg-e--ghost" d="M356.5 102H376.5"/><path class="rg-e rg-e--ghost" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="255.7" y="38">a3 … a63</text><text class="rg-t" x="333.5" y="38">a64</text><text class="rg-t" x="399.5" y="38">a65</text><text class="rg-h" x="399.5" y="17">head</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t rg-t--ghost" x="255.7" y="106">s3 … s63</text><text class="rg-t rg-t--ghost" x="333.5" y="106">s64</text><text class="rg-t rg-t--ghost" x="399.5" y="106">s65</text><text class="rg-t rg-t--ghost" x="465.5" y="106">s66</text></svg></div></div></li><li class="rg-fold">⋮ steps 132 to 194 repeat the same calls for 63 more blocks, <b class="rg-l">s3</b> to <b class="rg-l">s65</b></li><li class="rg-step"><div class="rg-call"><span class="rg-n">195</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">s66</b><div class="rg-expect"><span class="rg-expect-h">accepts the first match of</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">s66</b></span></li><li class="rg-o rg-o--open"><b class="rg-o-status">ACCEPTED</b> <code class="rg-o-id">accepted</code><span class="rg-o-more">latestValidHash null</span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 494.5 142" width="494.5" height="142" role="img" aria-label="State after the step: head a65"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M290.5 34H310.5"/><path class="rg-e rg-e--canon" d="M356.5 34H376.5"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e" d="M200.9 102H220.9"/><path class="rg-e" d="M290.5 102H310.5"/><path class="rg-e" d="M356.5 102H376.5"/><path class="rg-e" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="255.7" y="38">a3 … a63</text><text class="rg-t" x="333.5" y="38">a64</text><text class="rg-t" x="399.5" y="38">a65</text><text class="rg-h" x="399.5" y="17">head</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="255.7" y="106">s3 … s63</text><text class="rg-t" x="333.5" y="106">s64</text><text class="rg-t" x="399.5" y="106">s65</text><text class="rg-t" x="465.5" y="106">s66</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">196</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">s66</b> <span class="rg-sep">·</span> safe <b class="rg-l">a1</b> <span class="rg-sep">·</span> finalized <b class="rg-l">a1</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">s66</b> <span class="rg-sep">·</span> then latest <b class="rg-l">s66</b>, safe <b class="rg-l">a1</b>, finalized <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 494.5 142" width="494.5" height="142" role="img" aria-label="State after the step: head s66, safe a1, finalized a1"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e" d="M134.9 34H154.9"/><path class="rg-e" d="M200.9 34H220.9"/><path class="rg-e" d="M290.5 34H310.5"/><path class="rg-e" d="M356.5 34H376.5"/><path class="rg-e rg-e--canon" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e rg-e--canon" d="M200.9 102H220.9"/><path class="rg-e rg-e--canon" d="M290.5 102H310.5"/><path class="rg-e rg-e--canon" d="M356.5 102H376.5"/><path class="rg-e rg-e--canon" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-s" x="111.9" y="58">safe</text><text class="rg-s" x="111.9" y="69">finalized</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="255.7" y="38">a3 … a63</text><text class="rg-t" x="333.5" y="38">a64</text><text class="rg-t" x="399.5" y="38">a65</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="255.7" y="106">s3 … s63</text><text class="rg-t" x="333.5" y="106">s64</text><text class="rg-t" x="399.5" y="106">s65</text><text class="rg-t" x="465.5" y="106">s66</text><text class="rg-h" x="465.5" y="85">head</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">197</span> <code class="rg-m rg-m--rpc">assertCanonical</code> height 2 is <b class="rg-l">s2</b> <span class="rg-sep">·</span> height 65 is <b class="rg-l">s65</b> <span class="rg-sep">·</span> height 66 is <b class="rg-l">s66</b></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">198</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a65</b> <span class="rg-sep">·</span> safe <b class="rg-l">a1</b> <span class="rg-sep">·</span> finalized <b class="rg-l">a1</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a65</b> <span class="rg-sep">·</span> then latest <b class="rg-l">a65</b>, safe <b class="rg-l">a1</b>, finalized <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 494.5 142" width="494.5" height="142" role="img" aria-label="State after the step: head a65, safe a1, finalized a1"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M290.5 34H310.5"/><path class="rg-e rg-e--canon" d="M356.5 34H376.5"/><path class="rg-e" d="M134.9 34C144.9 34 144.9 102 154.9 102"/><path class="rg-e" d="M200.9 102H220.9"/><path class="rg-e" d="M290.5 102H310.5"/><path class="rg-e" d="M356.5 102H376.5"/><path class="rg-e" d="M422.5 102H442.5"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="376.5" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="89" width="69.6" height="26" rx="7"><title>61 blocks</title></rect><rect class="rg-b rg-b--engine" x="310.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="376.5" y="89" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="442.5" y="89" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-s" x="111.9" y="58">safe</text><text class="rg-s" x="111.9" y="69">finalized</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="255.7" y="38">a3 … a63</text><text class="rg-t" x="333.5" y="38">a64</text><text class="rg-t" x="399.5" y="38">a65</text><text class="rg-h" x="399.5" y="17">head</text><text class="rg-t" x="177.9" y="106">s2</text><text class="rg-t" x="255.7" y="106">s3 … s63</text><text class="rg-t" x="333.5" y="106">s64</text><text class="rg-t" x="399.5" y="106">s65</text><text class="rg-t" x="465.5" y="106">s66</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">199</span> <code class="rg-m rg-m--rpc">assertCanonical</code> height 2 is <b class="rg-l">a2</b> <span class="rg-sep">·</span> height 65 is <b class="rg-l">a65</b> <span class="rg-sep">·</span> height 66 is <span class="rg-none">none</span></div></li></ol></div></p>
+</div>
+</div>
+</div>
+<h2 id="parametrized-test-cases">Parametrized Test Cases<a class="headerlink" href="#parametrized-test-cases" title="Permanent link">&para;</a></h2>
+<p>This test generates 2 parametrized test cases across 5 forks.</p>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../test_side_chain_reorg_depth_default/" class="md-footer__link md-footer__link--prev" aria-label="Previous: &lt;code&gt;test_side_chain_reorg_depth_default&lt;&#x2f;code&gt;">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                <code>test_side_chain_reorg_depth_default</code>
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../test_fork_boundary_reorg/" class="md-footer__link md-footer__link--next" aria-label="Next: Test Fork Boundary Reorg">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Test Fork Boundary Reorg
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright: 2026, Ethereum Community
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      
+<div class="md-progress" data-md-component="progress" role="progressbar" aria-label="Loading"></div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../../..","features":["content.code.copy","search.suggest","search.highlight","content.tabs.link","navigation.indexes","navigation.instant","navigation.prune","navigation.tabs","navigation.footer","navigation.instant.prefetch","navigation.instant.progress","navigation.path","navigation.top","navigation.tracking","toc.follow","content.tooltips","content.footnote.tooltips","content.code.annotate","search.share","navigation.instant.preview","content.code.select","content.lazy","content.action.edit","content.action.view"],"redirect":null,"search":"../../../../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d31f0ffa.min.js"></script>
+      
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+      
+        <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.dataTables.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.colVis.min.js"></script>
+      
+        <script src="../../../../vendor/glightbox/glightbox.min.js"></script>
+      
+        <script src="../../../../javascripts/site.js"></script>
+      
+    
+  </body>
+</html>

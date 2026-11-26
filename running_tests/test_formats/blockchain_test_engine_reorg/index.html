@@ -1,0 +1,3730 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The Ethereum Execution Layer Specifications and Tests">
+      
+      
+      
+        <link rel="canonical" href="https://specs.ethereum.foundation/docs/execution-specs/running_tests/test_formats/blockchain_test_engine_reorg/">
+      
+      
+      
+        <link rel="prev" href="../blockchain_test_sync/">
+      
+      
+        <link rel="next" href="../common_types/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../img/eth-diamond-orange.svg">
+      <meta name="generator" content="zensical-0.1.0">
+    
+    
+      
+        <title>Blockchain Engine Reorg Tests - Ethereum Execution Specs</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../../assets/stylesheets/modern/main.4ab2de0c.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    
+      <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.min.css">
+    
+      <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css">
+    
+      <link rel="stylesheet" href="../../../vendor/glightbox/glightbox.min.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/custom.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/reorg_diagram.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  <meta property="og:type" content="website" />
+<meta property="og:title" content="Blockchain Engine Reorg Tests - Ethereum Execution Specs" />
+<meta property="og:description" content="The Ethereum Execution Layer Specifications and Tests" />
+<meta property="og:image" content="https://specs.ethereum.foundation/docs/execution-specs/assets/images/social/running_tests/test_formats/blockchain_test_engine_reorg.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://specs.ethereum.foundation/docs/execution-specs/running_tests/test_formats/blockchain_test_engine_reorg/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="Blockchain Engine Reorg Tests - Ethereum Execution Specs" />
+<meta property="twitter:description" content="The Ethereum Execution Layer Specifications and Tests" />
+<meta property="twitter:image" content="https://specs.ethereum.foundation/docs/execution-specs/assets/images/social/running_tests/test_formats/blockchain_test_engine_reorg.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Ethereum Execution Specs" class="md-header__button md-logo" aria-label="Ethereum Execution Specs" data-md-component="logo">
+      
+  <img src="../../../img/eth-diamond-orange.svg" alt="Ethereum Execution Specs">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigation</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ethereum Execution Specs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Blockchain Engine Reorg Tests
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Search</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/ethereum/execution-specs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    execution-specs
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../getting_started/installation/" class="md-tabs__link">
+          
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../specs/" class="md-tabs__link">
+          
+  
+  Specifications
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../consensus_tests/" class="md-tabs__link">
+          
+  
+  Consensus Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../dev/" class="md-tabs__link">
+          
+  
+  Developer Doc
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../library/" class="md-tabs__link">
+          
+  
+  Library Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../tests/" class="md-tabs__link">
+          
+  
+  Test Case Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Ethereum Execution Specs" class="md-nav__button md-logo" aria-label="Ethereum Execution Specs" data-md-component="logo">
+      
+  <img src="../../../img/eth-diamond-orange.svg" alt="Ethereum Execution Specs">
+
+    </a>
+    Ethereum Execution Specs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethereum/execution-specs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    execution-specs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../getting_started/installation/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Getting Started
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../specs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Specifications
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../consensus_tests/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Consensus Tests
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Consensus Tests
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../writing_tests/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Writing Tests
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../filling_tests/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Filling Tests
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Running Tests
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4_4">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Running Tests
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../running/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Methods of Running Tests
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  EELS Fixture Releases
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../writing_tests/fuzzer_bridge/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Fuzzer Bridge
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Fixture Specifications
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4_5" id="__nav_4_4_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_4_5_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_4_4_5">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Test Fixture Specifications
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../state_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  State Tests
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blockchain_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Blockchain Tests
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blockchain_test_engine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Blockchain Engine Tests
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blockchain_test_engine_x/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Blockchain Engine X Tests
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transaction_test/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Transaction Tests
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blockchain_test_sync/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Blockchain Sync Tests
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Blockchain Engine Reorg Tests
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Blockchain Engine Reorg Tests
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Description
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumption" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Consumption
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Structures
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hivefixture" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>HiveFixture</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HiveFixture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-network-fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>network</code>: <code>Fork</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-config-fixtureconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>config</code>: <code>FixtureConfig</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-genesisblockheader-fixtureheader" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>genesisBlockHeader</code>: <code>FixtureHeader</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-pre-alloc" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>pre</code>: <code>Alloc</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-blocks-mappingstringfixturereorgblock" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>blocks</code>: <code>Mapping</code><code>[String,</code><code>FixtureReorgBlock</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-steps-liststep" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>steps</code>: <code>List</code><code>[</code><code>Step</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-minreorgdepth-optionalnumber" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>minReorgDepth</code>: <code>Optional</code><code>[</code><code>Number</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixturereorgblock" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>FixtureReorgBlock</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FixtureReorgBlock">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-parent-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>parent</code>: <code>String</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-payload-fixturenewpayloadrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>payload</code>: <code>FixtureNewPayloadRequest</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-validationerror-optionaltransactionexceptionblockexception" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>validationError</code>: <code>Optional</code><code>[</code><code>TransactionException</code><code>|</code><code>BlockException</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>Step</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-type-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>type</code>: <code>String</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-description-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>description</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#newpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>newPayload</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forkchoiceupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>forkchoiceUpdated</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>getPayload</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserthead" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertHead</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assertcanonical" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertCanonical</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assertstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertState</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assertreceipt" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertReceipt</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assertlogs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertLogs</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sendrawtransaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>sendRawTransaction</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserttxstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertTxStatus</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#servepeer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>servePeer</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#awaithead" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>awaitHead</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>Outcome</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Outcome">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-id-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>id</code>: <code>String</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-disputed-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>disputed</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-status-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>status</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-latestvalidhash-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>latestValidHash</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-errorcode-optionalnumber" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>errorCode</code>: <code>Optional</code><code>[</code><code>Number</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-anyerror-optionalbool" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>anyError</code>: <code>Optional</code><code>[``Bool``]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-headmoved-optionalbool" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>headMoved</code>: <code>Optional</code><code>[``Bool``]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-validationerror-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>validationError</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-payloadid-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>payloadId</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payloadattributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>PayloadAttributes</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accountexpectation" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>AccountExpectation</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AccountExpectation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-balance-nonce-optionalhexnumber" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>balance</code> / <code>nonce</code>: <code>Optional</code><code>[</code><code>HexNumber</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-storage-optionalmappinghashhash" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>storage</code>: <code>Optional</code><code>[</code><code>Mapping</code><code>[</code><code>Hash</code><code>,</code><code>Hash</code><code>]]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-code-optionalbytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>code</code>: <code>Optional</code><code>[</code><code>Bytes</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#txref" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>TxRef</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TxRef">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-block-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>block</code>: <code>String</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-index-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>index</code>: <code>Number</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differences-from-blockchain-engine-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Differences from Blockchain Engine Tests
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fork-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Fork Support
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../common_types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Common Types
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exceptions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Exceptions
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../hive/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Hive
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../consume/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Consume Commands
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../execute/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Execute Commands
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../useful_pytest_options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Useful Pytest Options
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../dev/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Developer Doc
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../library/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Library Reference
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../tests/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Case Reference
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Description
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#consumption" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Consumption
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structures" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Structures
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hivefixture" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>HiveFixture</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HiveFixture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-network-fork" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>network</code>: <code>Fork</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-config-fixtureconfig" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>config</code>: <code>FixtureConfig</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-genesisblockheader-fixtureheader" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>genesisBlockHeader</code>: <code>FixtureHeader</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-pre-alloc" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>pre</code>: <code>Alloc</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-blocks-mappingstringfixturereorgblock" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>blocks</code>: <code>Mapping</code><code>[String,</code><code>FixtureReorgBlock</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-steps-liststep" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>steps</code>: <code>List</code><code>[</code><code>Step</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-minreorgdepth-optionalnumber" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>minReorgDepth</code>: <code>Optional</code><code>[</code><code>Number</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fixturereorgblock" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>FixtureReorgBlock</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="FixtureReorgBlock">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-parent-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>parent</code>: <code>String</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-payload-fixturenewpayloadrequest" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>payload</code>: <code>FixtureNewPayloadRequest</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-validationerror-optionaltransactionexceptionblockexception" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>validationError</code>: <code>Optional</code><code>[</code><code>TransactionException</code><code>|</code><code>BlockException</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>Step</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-type-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>type</code>: <code>String</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-description-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>description</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#newpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>newPayload</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#forkchoiceupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>forkchoiceUpdated</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getpayload" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>getPayload</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserthead" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertHead</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assertcanonical" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertCanonical</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assertstate" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertState</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assertreceipt" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertReceipt</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assertlogs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertLogs</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sendrawtransaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>sendRawTransaction</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asserttxstatus" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>assertTxStatus</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#servepeer" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>servePeer</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#awaithead" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>awaitHead</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outcome" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>Outcome</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Outcome">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-id-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>id</code>: <code>String</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-disputed-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>disputed</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-status-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>status</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-latestvalidhash-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>latestValidHash</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-errorcode-optionalnumber" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>errorCode</code>: <code>Optional</code><code>[</code><code>Number</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-anyerror-optionalbool" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>anyError</code>: <code>Optional</code><code>[``Bool``]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-headmoved-optionalbool" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>headMoved</code>: <code>Optional</code><code>[``Bool``]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-validationerror-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>validationError</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-payloadid-optionalstring" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>payloadId</code>: <code>Optional</code><code>[String]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payloadattributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>PayloadAttributes</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accountexpectation" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>AccountExpectation</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AccountExpectation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-balance-nonce-optionalhexnumber" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>balance</code> / <code>nonce</code>: <code>Optional</code><code>[</code><code>HexNumber</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-storage-optionalmappinghashhash" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>storage</code>: <code>Optional</code><code>[</code><code>Mapping</code><code>[</code><code>Hash</code><code>,</code><code>Hash</code><code>]]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-code-optionalbytes" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>code</code>: <code>Optional</code><code>[</code><code>Bytes</code><code>]</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#txref" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        <code>TxRef</code>
+      </span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="TxRef">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#-block-string" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>block</code>: <code>String</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-index-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        - <code>index</code>: <code>Number</code>
+      </span>
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#differences-from-blockchain-engine-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Differences from Blockchain Engine Tests
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fork-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Fork Support
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../../../consensus_tests/" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Consensus Tests
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Running Tests
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Test Fixture Specifications
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/ethereum/execution-specs/edit/forks/bogota/docs/running_tests/test_formats/blockchain_test_engine_reorg.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+    <a href="https://github.com/ethereum/execution-specs/blob/forks/bogota/docs/running_tests/test_formats/blockchain_test_engine_reorg.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code-2" viewBox="0 0 24 24"><path d="M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35"/><path d="M14 2v5a1 1 0 0 0 1 1h5M5 16l-3 3 3 3M9 22l3-3-3-3"/></svg>
+    </a>
+  
+
+
+<h1 id="blockchain-engine-reorg-tests">Blockchain Engine Reorg Tests  <!-- markdownlint-disable MD051 (MD051=link-fragments "Link fragments should be valid") --><a class="headerlink" href="#blockchain-engine-reorg-tests" title="Permanent link">&para;</a></h1>
+<p>The Blockchain Engine Reorg Test fixture format tests are included in the fixtures subdirectory <code>blockchain_tests_engine_reorg</code>, and describe a DAG of Engine API payloads plus a branching script of Engine API / JSON-RPC steps to verify chain reorganization behavior.</p>
+<p>These are produced by the <code>ReorgTest</code> test spec.</p>
+<h2 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h2>
+<p>Unlike <a href=".././blockchain_test_engine/"><code>BlockchainEngineFixture</code></a> (a linear payload list where the consumer always sends <code>forkchoiceUpdated(head=payload)</code> after each payload), this format lets a test describe side chains, explicit forkchoice states (head, safe, finalized), multiple legal outcomes per step, outcome-specific follow-up steps (branches), client-built payloads (<code>getPayload</code> binds the built payload to a new label), and transaction-pool observations.</p>
+<p>Every block in the DAG names its parent by label instead of relying on list order, so sibling blocks and blocks built on top of an invalid block are first-class. Every hash-valued step field is a label (<code>"genesis"</code> is reserved for the genesis block, <code>"zero"</code> for the zero hash, and <code>"latest"</code>/<code>"null"</code>/<code>"any"</code> are reserved RPC tags/special values valid only where a field's description says so; labels introduced by <code>getPayload.bind</code> are resolved at run time); the consumer resolves labels to hashes itself, so fixtures are byte-identical across clients.</p>
+<p>Each step's <code>expect</code> field is a list of legal outcomes (the <a href="../../../library/execution_testing_specs/">Engine API reference model</a> fills it in at fill time for any step an author left unannotated, deriving the outcomes the <a href="https://github.com/ethereum/execution-apis">execution-apis</a> specification allows a conformant client to return); the consumer selects the first outcome matching the observed response and runs that outcome's <code>branches</code> steps.</p>
+<p>Every outcome in a step's <code>expect</code>, model-filled or hand-authored, must be spec-permitted at that point, so a passing fixture establishes conformance. Where the specification is ambiguous, an outcome is marked <code>disputed</code> with a reference or rationale; a client's spec violation is never added as an alternative.</p>
+<p>A single JSON fixture file is composed of a JSON object where each key-value pair is a different <a href="#hivefixture"><code>HiveFixture</code></a> test object, with the key string representing the test name.</p>
+<h2 id="consumption">Consumption<a class="headerlink" href="#consumption" title="Permanent link">&para;</a></h2>
+<p>For each <a href="#hivefixture"><code>HiveFixture</code></a> test object in the JSON fixture file, perform the following steps:</p>
+<ol>
+<li>
+<p>Start the client under test using:</p>
+<ul>
+<li><a href="#-network-fork"><code>network</code></a> to configure the execution fork schedule according to the <a href=".././common_types/#fork"><code>Fork</code></a> type definition.</li>
+<li><a href="#-pre-alloc"><code>pre</code></a> as the starting state allocation of the execution environment for the test.</li>
+<li><a href="#-genesisblockheader-fixtureheader"><code>genesisBlockHeader</code></a> as the genesis block header.</li>
+<li><code>HIVE_ENGINE_MAX_REORG_DEPTH</code>, derived from <a href="#-minreorgdepth-optionalnumber"><code>minReorgDepth</code></a>, if present. Only the geth and erigon hive wrappers read it, and only from <a href="https://github.com/ethereum/hive/pull/1608">ethereum/hive#1608</a> on.</li>
+</ul>
+</li>
+<li>
+<p>Send an initial <code>engine_forkchoiceUpdatedVX</code> to the genesis block and verify it returns <code>VALID</code>; verify the client's genesis block hash via <code>eth_getBlockByNumber(0)</code>.</p>
+</li>
+<li>
+<p>Run <a href="#-steps-liststep"><code>steps</code></a> in order. For each step:</p>
+<ol>
+<li>Resolve every label referenced by the step to a hash (or to the label itself, for a client-built payload not yet bound).</li>
+<li>Send the request (or perform the RPC observation).</li>
+<li>Select the first entry of the step's <code>expect</code> list whose constraints match the observed response; fail the test if none match.</li>
+<li>Run the steps listed in <code>branches</code> under the matched outcome's <code>id</code>, if any (recursively).</li>
+</ol>
+</li>
+</ol>
+<h2 id="structures">Structures<a class="headerlink" href="#structures" title="Permanent link">&para;</a></h2>
+<h3 id="hivefixture"><code>HiveFixture</code><a class="headerlink" href="#hivefixture" title="Permanent link">&para;</a></h3>
+<h4 id="-network-fork">- <code>network</code>: <a href=".././common_types/#fork"><code>Fork</code></a><a class="headerlink" href="#-network-fork" title="Permanent link">&para;</a></h4>
+<p>Fork configuration for the test. It is guaranteed that this field contains the same value as <code>config.network</code>.</p>
+<h4 id="-config-fixtureconfig">- <code>config</code>: <a href=".././blockchain_test_engine/#fixtureconfig"><code>FixtureConfig</code></a><a class="headerlink" href="#-config-fixtureconfig" title="Permanent link">&para;</a></h4>
+<p>Chain configuration object to be applied to every client running the test.</p>
+<h4 id="-genesisblockheader-fixtureheader">- <code>genesisBlockHeader</code>: <a href=".././blockchain_test/#fixtureheader"><code>FixtureHeader</code></a><a class="headerlink" href="#-genesisblockheader-fixtureheader" title="Permanent link">&para;</a></h4>
+<p>Genesis block header.</p>
+<h4 id="-pre-alloc">- <code>pre</code>: <a href=".././common_types/#alloc-mappingaddressaccount"><code>Alloc</code></a><a class="headerlink" href="#-pre-alloc" title="Permanent link">&para;</a></h4>
+<p>Starting account allocation for the test. State root calculated from this allocation must match the one in the genesis block.</p>
+<h4 id="-blocks-mappingstringfixturereorgblock">- <code>blocks</code>: <a href=".././common_types/#mapping"><code>Mapping</code></a><code>[String,</code><a href="#fixturereorgblock"><code>FixtureReorgBlock</code></a><code>]</code><a class="headerlink" href="#-blocks-mappingstringfixturereorgblock" title="Permanent link">&para;</a></h4>
+<p>The block DAG, keyed by label.</p>
+<h4 id="-steps-liststep">- <code>steps</code>: <a href=".././common_types/#list"><code>List</code></a><code>[</code><a href="#step"><code>Step</code></a><code>]</code><a class="headerlink" href="#-steps-liststep" title="Permanent link">&para;</a></h4>
+<p>Ordered, branching script of Engine API / JSON-RPC steps.</p>
+<h4 id="-minreorgdepth-optionalnumber">- <code>minReorgDepth</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href=".././common_types/#number"><code>Number</code></a><code>]</code><a class="headerlink" href="#-minreorgdepth-optionalnumber" title="Permanent link">&para;</a></h4>
+<p>Minimum side-chain reorg depth (in blocks) the client must apply without refusing for capacity reasons; the consumer sets the client's cap (<code>HIVE_ENGINE_MAX_REORG_DEPTH</code>) to it. <code>None</code> keeps client defaults.</p>
+<h3 id="fixturereorgblock"><code>FixtureReorgBlock</code><a class="headerlink" href="#fixturereorgblock" title="Permanent link">&para;</a></h3>
+<h4 id="-parent-string">- <code>parent</code>: <code>String</code><a class="headerlink" href="#-parent-string" title="Permanent link">&para;</a></h4>
+<p>Label of the parent block (<code>"genesis"</code> for a block extending the genesis block).</p>
+<h4 id="-payload-fixturenewpayloadrequest">- <code>payload</code>: <code>FixtureNewPayloadRequest</code><a class="headerlink" href="#-payload-fixturenewpayloadrequest" title="Permanent link">&para;</a></h4>
+<p>The block's <code>engine_newPayloadVX</code> request: <code>params</code> (version-dependent parameter tuple, see <a href=".././blockchain_test_engine/#fixtureenginenewpayload"><code>FixtureEngineNewPayload</code></a>) and <code>newPayloadVersion</code>.</p>
+<h4 id="-validationerror-optionaltransactionexceptionblockexception">- <code>validationError</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href="../../../library/execution_testing_exceptions/#execution_testing.exceptions.TransactionException"><code>TransactionException</code></a><code>|</code><a href="../../../library/execution_testing_exceptions/#execution_testing.exceptions.BlockException"><code>BlockException</code></a><code>]</code><a class="headerlink" href="#-validationerror-optionaltransactionexceptionblockexception" title="Permanent link">&para;</a></h4>
+<p>Present for an invalid block only: the exceptions a client may report for it, any one of them, in the form of <a href=".././blockchain_test_engine/#fixtureenginenewpayload"><code>FixtureEngineNewPayload.validationError</code></a>. A payload that does not hash to its <code>blockHash</code> lists <code>BlockException.INVALID_BLOCK_HASH</code>; a test can also list that exception for a block whose hash is correct, so the field does not tell the two apart. The field is informative: a consumer judges a client by the <code>expect</code> of the steps, which can accept other answers for an invalid block (<code>ACCEPTED</code> or <code>SYNCING</code> on a side chain, for example). Fixtures with this field do not load in versions of the framework from before it was added.</p>
+<h3 id="step"><code>Step</code><a class="headerlink" href="#step" title="Permanent link">&para;</a></h3>
+<p>A step is one of the variants below, distinguished by its <code>type</code> field. Every variant shares:</p>
+<h4 id="-type-string">- <code>type</code>: <code>String</code><a class="headerlink" href="#-type-string" title="Permanent link">&para;</a></h4>
+<p>One of <code>newPayload</code>,<code>forkchoiceUpdated</code>,<code>getPayload</code>,<code>assertHead</code>,<code>assertCanonical</code>,<code>assertState</code>,<code>assertReceipt</code>,<code>assertLogs</code>,<code>sendRawTransaction</code>,<code>assertTxStatus</code>,<code>servePeer</code>,<code>awaitHead</code>.</p>
+<h4 id="-description-optionalstring">- <code>description</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code><a class="headerlink" href="#-description-optionalstring" title="Permanent link">&para;</a></h4>
+<p>Human-readable description of the step, for logging.</p>
+<h4 id="newpayload"><code>newPayload</code><a class="headerlink" href="#newpayload" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>block</code>: <code>String</code> — label of the block (or a <code>getPayload</code>-bound label) to send via <code>engine_newPayloadVX</code>.</li>
+<li><code>expect</code>: <a href=".././common_types/#list"><code>List</code></a><code>[</code><a href="#outcome"><code>Outcome</code></a><code>]</code> — legal outcomes.</li>
+<li><code>branches</code>: <a href=".././common_types/#mapping"><code>Mapping</code></a><code>[String,</code><a href=".././common_types/#list"><code>List</code></a><code>[</code><a href="#step"><code>Step</code></a><code>]]</code> — follow-up steps per matched outcome id.</li>
+</ul>
+<h4 id="forkchoiceupdated"><code>forkchoiceUpdated</code><a class="headerlink" href="#forkchoiceupdated" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>head</code> / <code>safe</code> / <code>finalized</code>: <code>String</code> — labels; <code>safe</code>/<code>finalized</code> default to <code>"zero"</code>.</li>
+<li><code>version</code>: <a href=".././common_types/#number"><code>Number</code></a> — <code>engine_forkchoiceUpdatedVX</code> version; when unset, that of the payload attributes' fork for a build request, else of the head block's fork.</li>
+<li><code>payloadAttributes</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href="#payloadattributes"><code>PayloadAttributes</code></a><code>]</code> — if set, a payload build is requested.</li>
+<li><code>expect</code> / <code>branches</code>: as above.</li>
+</ul>
+<h4 id="getpayload"><code>getPayload</code><a class="headerlink" href="#getpayload" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>bind</code>: <code>String</code> — new label for the built payload.</li>
+<li><code>version</code>: <a href=".././common_types/#number"><code>Number</code></a> — <code>engine_getPayloadVX</code> version; when unset, that of the retrieved build's fork.</li>
+<li><code>parent</code>: <code>String</code> — expected parent of the built payload.</li>
+<li><code>transactionsInclude</code> / <code>transactionsExclude</code>: <a href=".././common_types/#list"><code>List</code></a><code>[</code><a href="#txref"><code>TxRef</code></a><code>]</code> — transactions that must (or must not) be in the built payload.</li>
+</ul>
+<p><code>getPayload</code> retrieves the build whose <code>payloadId</code> the last <code>forkchoiceUpdated</code> that did not error returned. Filling rejects a <code>getPayload</code> with no such build, one on another <code>parent</code>, or one that depends on which outcome of an earlier step occurred. A bound label's <code>forkchoiceUpdated</code> and <code>newPayload</code> versions are those of its build's fork.</p>
+<p>The wait before <code>engine_getPayloadVX</code> is the consumer's <code>--get-payload-wait-time</code> option, not a fixture field.</p>
+<h4 id="asserthead"><code>assertHead</code><a class="headerlink" href="#asserthead" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>latest</code> / <code>safe</code> / <code>finalized</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code> — expected labels, checked via <code>eth_getBlockByNumber</code>.</li>
+</ul>
+<h4 id="assertcanonical"><code>assertCanonical</code><a class="headerlink" href="#assertcanonical" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>blocks</code>: <a href=".././common_types/#mapping"><code>Mapping</code></a><code>[</code><a href=".././common_types/#hexnumber"><code>HexNumber</code></a><code>,</code><a href=".././common_types/#optional"><code>Optional</code></a><code>[String]]</code> — expected label (or <code>None</code> for "no block") at each height.</li>
+</ul>
+<h4 id="assertstate"><code>assertState</code><a class="headerlink" href="#assertstate" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>at</code>: <code>String</code> — block label or <code>"genesis"</code> (that block's own state; it must be canonical when the step runs), or <code>"latest"</code>. Default <code>"latest"</code>.</li>
+<li><code>accounts</code>: <a href=".././common_types/#mapping"><code>Mapping</code></a><code>[</code><a href=".././common_types/#address"><code>Address</code></a><code>,</code><a href="#accountexpectation"><code>AccountExpectation</code></a><code>]</code>.</li>
+</ul>
+<h4 id="assertreceipt"><code>assertReceipt</code><a class="headerlink" href="#assertreceipt" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>tx</code>: <a href="#txref"><code>TxRef</code></a>.</li>
+<li><code>block</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code> — expected receipt block label, or <code>None</code> for no receipt.</li>
+<li><code>status</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href=".././common_types/#hexnumber"><code>HexNumber</code></a><code>]</code>.</li>
+</ul>
+<h4 id="assertlogs"><code>assertLogs</code><a class="headerlink" href="#assertlogs" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>address</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href=".././common_types/#address"><code>Address</code></a><code>]</code>.</li>
+<li><code>fromBlock</code> / <code>toBlock</code>: <a href=".././common_types/#hexnumber"><code>HexNumber</code></a><code>|String</code> — defaults <code>"earliest"</code> / <code>"latest"</code>.</li>
+<li><code>blocks</code>: <a href=".././common_types/#list"><code>List</code></a><code>[String]</code> — labels whose logs must appear, one entry per expected log.</li>
+</ul>
+<h4 id="sendrawtransaction"><code>sendRawTransaction</code><a class="headerlink" href="#sendrawtransaction" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>tx</code>: <a href="#txref"><code>TxRef</code></a>.</li>
+<li><code>expect</code>: <a href=".././common_types/#list"><code>List</code></a><code>[String]</code> — subset of <code>["accepted", "rejected"]</code>; default <code>["accepted"]</code>.</li>
+</ul>
+<h4 id="asserttxstatus"><code>assertTxStatus</code><a class="headerlink" href="#asserttxstatus" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>tx</code>: <a href="#txref"><code>TxRef</code></a>.</li>
+<li><code>expect</code>: <a href=".././common_types/#list"><code>List</code></a><code>[String]</code> — non-empty subset of <code>["included", "pending", "dropped"]</code>, preferred first. The consumer polls <code>eth_getTransactionByHash</code> until the status is the first listed one; once its deadline passes, any listed status is accepted.</li>
+<li><code>includedIn</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code> — required block label when <code>included</code> matches.</li>
+</ul>
+<h4 id="servepeer"><code>servePeer</code><a class="headerlink" href="#servepeer" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>head</code>: <code>String</code> — label of the block whose chain, from genesis, a devp2p peer serves to the client; the consumer dials the peer into the client on the first <code>servePeer</code> step. A later <code>servePeer</code> switches the served chain, and the peer still answers requests by hash for earlier ones. A client may download a block's missing ancestors from the peer within a <code>newPayload</code> or <code>forkchoiceUpdated</code> call, so a head is announced before <code>servePeer</code>.</li>
+</ul>
+<h4 id="awaithead"><code>awaitHead</code><a class="headerlink" href="#awaithead" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>latest</code>: <code>String</code> — label of the block the client must sync from the peer and make its head, after a <code>forkchoiceUpdated</code> to it answered <code>SYNCING</code>. That update keeps safe and finalized, which a client may apply with the head or only on a later update. The consumer polls <code>eth_getBlockByNumber("latest")</code> for up to 60 seconds. It sends the <code>newPayload</code> of that block and that <code>forkchoiceUpdated</code> again after 0.5 seconds and then every 3 seconds, redialing the peer first if the client dropped it. An <code>INVALID</code> answer to either fails the step at once.</li>
+</ul>
+<p>The Engine API never requires a client to sync: <code>paris.md</code> only says a client MAY start one. <code>awaitHead</code> is therefore a liveness expectation beyond the specification, and a failure means the client did not reach the head in time while the update was repeated, not that it violated the Engine API.</p>
+<p>Between <code>servePeer</code> and <code>awaitHead</code> the client may make the synced block its head at any moment. The filler therefore accepts only <code>servePeer</code>, and a <code>newPayload</code> or <code>forkchoiceUpdated</code> with an authored <code>expect</code>, between the two.</p>
+<h3 id="outcome"><code>Outcome</code><a class="headerlink" href="#outcome" title="Permanent link">&para;</a></h3>
+<p>One legal outcome of an Engine API step. Every set field is a constraint; unset fields are not checked. Each outcome sets <code>errorCode</code>/<code>anyError</code>, <code>status</code> or <code>headMoved</code>: the other fields alone are also met by a <code>SYNCING</code> or <code>INVALID</code> response.</p>
+<h4 id="-id-string">- <code>id</code>: <code>String</code><a class="headerlink" href="#-id-string" title="Permanent link">&para;</a></h4>
+<p>Identifier, unique within the step's <code>expect</code>; selects the <code>branches</code> entry to run when matched.</p>
+<h4 id="-disputed-optionalstring">- <code>disputed</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code><a class="headerlink" href="#-disputed-optionalstring" title="Permanent link">&para;</a></h4>
+<p>If set, the specification is ambiguous about this outcome; the value is a reference (e.g. an issue URL). A disputed outcome still passes.</p>
+<h4 id="-status-optionalstring">- <code>status</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code><a class="headerlink" href="#-status-optionalstring" title="Permanent link">&para;</a></h4>
+<p>Expected <code>payloadStatus.status</code> (<code>VALID</code>,<code>INVALID</code>,<code>SYNCING</code>,<code>ACCEPTED</code>,<code>INVALID_BLOCK_HASH</code>).</p>
+<h4 id="-latestvalidhash-optionalstring">- <code>latestValidHash</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code><a class="headerlink" href="#-latestvalidhash-optionalstring" title="Permanent link">&para;</a></h4>
+<p>Expected <code>latestValidHash</code> as a block label, <code>"null"</code>, or <code>"any"</code>. A <code>SYNCING</code> outcome always expects <code>"null"</code>.</p>
+<h4 id="-errorcode-optionalnumber">- <code>errorCode</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href=".././common_types/#number"><code>Number</code></a><code>]</code><a class="headerlink" href="#-errorcode-optionalnumber" title="Permanent link">&para;</a></h4>
+<p>Expected JSON-RPC error code (e.g. <code>-38002</code>,<code>-38006</code>).</p>
+<h4 id="-anyerror-optionalbool">- <code>anyError</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[``Bool``]</code><a class="headerlink" href="#-anyerror-optionalbool" title="Permanent link">&para;</a></h4>
+<p>If <code>true</code>, any JSON-RPC error matches (for uncoded errors).</p>
+<h4 id="-headmoved-optionalbool">- <code>headMoved</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[``Bool``]</code><a class="headerlink" href="#-headmoved-optionalbool" title="Permanent link">&para;</a></h4>
+<p><code>forkchoiceUpdated</code> only: whether <code>latest</code> equals the requested head right after the call. Distinguishes an applied update from a no-op when both answer <code>VALID</code> with the same <code>latestValidHash</code>.</p>
+<h4 id="-validationerror-optionalstring">- <code>validationError</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code><a class="headerlink" href="#-validationerror-optionalstring" title="Permanent link">&para;</a></h4>
+<p><code>"required"</code> or <code>"none"</code>: whether <code>validationError</code> must be present or absent.</p>
+<h4 id="-payloadid-optionalstring">- <code>payloadId</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[String]</code><a class="headerlink" href="#-payloadid-optionalstring" title="Permanent link">&para;</a></h4>
+<p><code>"nonNull"</code> or <code>"null"</code>, for a <code>forkchoiceUpdated</code> with payload attributes.</p>
+<h3 id="payloadattributes"><code>PayloadAttributes</code><a class="headerlink" href="#payloadattributes" title="Permanent link">&para;</a></h3>
+<p>Payload attributes sent with <code>forkchoiceUpdated</code> to start a build; fields match the Engine API's <code>PayloadAttributesVX</code>.</p>
+<h3 id="accountexpectation"><code>AccountExpectation</code><a class="headerlink" href="#accountexpectation" title="Permanent link">&para;</a></h3>
+<h4 id="-balance-nonce-optionalhexnumber">- <code>balance</code> / <code>nonce</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href=".././common_types/#hexnumber"><code>HexNumber</code></a><code>]</code><a class="headerlink" href="#-balance-nonce-optionalhexnumber" title="Permanent link">&para;</a></h4>
+<h4 id="-storage-optionalmappinghashhash">- <code>storage</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href=".././common_types/#mapping"><code>Mapping</code></a><code>[</code><a href=".././common_types/#hash"><code>Hash</code></a><code>,</code><a href=".././common_types/#hash"><code>Hash</code></a><code>]]</code><a class="headerlink" href="#-storage-optionalmappinghashhash" title="Permanent link">&para;</a></h4>
+<h4 id="-code-optionalbytes">- <code>code</code>: <a href=".././common_types/#optional"><code>Optional</code></a><code>[</code><a href=".././common_types/#bytes"><code>Bytes</code></a><code>]</code><a class="headerlink" href="#-code-optionalbytes" title="Permanent link">&para;</a></h4>
+<p>Expected <code>eth_getCode</code> result; <code>0x</code> for an account without code.</p>
+<h3 id="txref"><code>TxRef</code><a class="headerlink" href="#txref" title="Permanent link">&para;</a></h3>
+<p>Reference to a transaction of a fixture block.</p>
+<h4 id="-block-string">- <code>block</code>: <code>String</code><a class="headerlink" href="#-block-string" title="Permanent link">&para;</a></h4>
+<h4 id="-index-number">- <code>index</code>: <a href=".././common_types/#number"><code>Number</code></a><a class="headerlink" href="#-index-number" title="Permanent link">&para;</a></h4>
+<p>Default <code>0</code>.</p>
+<h2 id="differences-from-blockchain-engine-tests">Differences from Blockchain Engine Tests<a class="headerlink" href="#differences-from-blockchain-engine-tests" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Block DAG, not a list</strong>: blocks name their parent by label, so side chains, invalid-block descendants and re-convergence are first-class.</li>
+<li><strong>Branching step script</strong>: <code>steps</code> is not a flat payload list; a step's <code>expect</code> can list several spec-legal outcomes and <code>branches</code> continues down the outcome that was actually observed.</li>
+<li><strong>Explicit forkchoice state</strong>: <code>forkchoiceUpdated</code> steps set <code>head</code>/<code>safe</code>/<code>finalized</code> independently instead of always following the last payload.</li>
+<li><strong>Client-built payloads</strong>: <code>getPayload</code> retrieves and binds a payload the client built itself, which can then be delivered back via <code>newPayload</code>.</li>
+<li><strong>State observations</strong>: <code>assertState</code>/<code>assertReceipt</code>/<code>assertLogs</code>/<code>assertTxStatus</code> steps check observable RPC state after a forkchoice update, instead of a single fixture-wide <code>post</code> allocation.</li>
+</ol>
+<h2 id="fork-support">Fork Support<a class="headerlink" href="#fork-support" title="Permanent link">&para;</a></h2>
+<p>Blockchain Engine Reorg Tests are only supported for post-merge forks (Paris and later), as they rely entirely on the Engine API.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../blockchain_test_sync/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Blockchain Sync Tests">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Blockchain Sync Tests
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../common_types/" class="md-footer__link md-footer__link--next" aria-label="Next: Common Types">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Common Types
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright: 2026, Ethereum Community
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      
+<div class="md-progress" data-md-component="progress" role="progressbar" aria-label="Loading"></div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../..","features":["content.code.copy","search.suggest","search.highlight","content.tabs.link","navigation.indexes","navigation.instant","navigation.prune","navigation.tabs","navigation.footer","navigation.instant.prefetch","navigation.instant.progress","navigation.path","navigation.top","navigation.tracking","toc.follow","content.tooltips","content.footnote.tooltips","content.code.annotate","search.share","navigation.instant.preview","content.code.select","content.lazy","content.action.edit","content.action.view"],"redirect":null,"search":"../../../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.d31f0ffa.min.js"></script>
+      
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+      
+        <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.dataTables.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.colVis.min.js"></script>
+      
+        <script src="../../../vendor/glightbox/glightbox.min.js"></script>
+      
+        <script src="../../../javascripts/site.js"></script>
+      
+    
+  </body>
+</html>

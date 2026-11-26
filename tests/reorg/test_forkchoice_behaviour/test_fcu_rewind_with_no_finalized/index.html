@@ -1,0 +1,4088 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="The Ethereum Execution Layer Specifications and Tests">
+      
+      
+      
+        <link rel="canonical" href="https://specs.ethereum.foundation/docs/execution-specs/tests/reorg/test_forkchoice_behaviour/test_fcu_rewind_with_no_finalized/">
+      
+      
+      
+        <link rel="prev" href="../test_alternating_canonical_and_depth1_forks/">
+      
+      
+        <link rel="next" href="../test_fcu_to_unknown_block_is_syncing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../img/eth-diamond-orange.svg">
+      <meta name="generator" content="zensical-0.1.0">
+    
+    
+      
+        <title>test_fcu_rewind_with_no_finalized - Ethereum Execution Specs</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../../../assets/stylesheets/modern/main.4ab2de0c.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    
+      <link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.min.css">
+    
+      <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css">
+    
+      <link rel="stylesheet" href="../../../../vendor/glightbox/glightbox.min.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/custom.css">
+    
+      <link rel="stylesheet" href="../../../../stylesheets/reorg_diagram.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  <meta property="og:type" content="website" />
+<meta property="og:title" content="&lt;code&gt;test_fcu_rewind_with_no_finalized&lt;/code&gt; - Ethereum Execution Specs" />
+<meta property="og:description" content="The Ethereum Execution Layer Specifications and Tests" />
+<meta property="og:image" content="https://specs.ethereum.foundation/docs/execution-specs/assets/images/social/tests/reorg/test_forkchoice_behaviour/test_fcu_rewind_with_no_finalized.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://specs.ethereum.foundation/docs/execution-specs/tests/reorg/test_forkchoice_behaviour/test_fcu_rewind_with_no_finalized/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="&lt;code&gt;test_fcu_rewind_with_no_finalized&lt;/code&gt; - Ethereum Execution Specs" />
+<meta property="twitter:description" content="The Ethereum Execution Layer Specifications and Tests" />
+<meta property="twitter:image" content="https://specs.ethereum.foundation/docs/execution-specs/assets/images/social/tests/reorg/test_forkchoice_behaviour/test_fcu_rewind_with_no_finalized.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Ethereum Execution Specs" class="md-header__button md-logo" aria-label="Ethereum Execution Specs" data-md-component="logo">
+      
+  <img src="../../../../img/eth-diamond-orange.svg" alt="Ethereum Execution Specs">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigation</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ethereum Execution Specs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              <code>test_fcu_rewind_with_no_finalized</code>
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Search</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/ethereum/execution-specs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    execution-specs
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../getting_started/installation/" class="md-tabs__link">
+          
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../specs/" class="md-tabs__link">
+          
+  
+  Specifications
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../consensus_tests/" class="md-tabs__link">
+          
+  
+  Consensus Tests
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../dev/" class="md-tabs__link">
+          
+  
+  Developer Doc
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../library/" class="md-tabs__link">
+          
+  
+  Library Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+      
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../" class="md-tabs__link">
+          
+  
+  Test Case Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Ethereum Execution Specs" class="md-nav__button md-logo" aria-label="Ethereum Execution Specs" data-md-component="logo">
+      
+  <img src="../../../../img/eth-diamond-orange.svg" alt="Ethereum Execution Specs">
+
+    </a>
+    Ethereum Execution Specs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethereum/execution-specs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    execution-specs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../getting_started/installation/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Getting Started
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../specs/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Specifications
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../consensus_tests/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Consensus Tests
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../dev/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Developer Doc
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../../library/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Library Reference
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Case Reference
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_7">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Test Case Reference
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../benchmark/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Benchmark
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../bogota/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Bogota
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../amsterdam/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Amsterdam
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../osaka/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Osaka
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../prague/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Prague
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../cancun/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Cancun
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../shanghai/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Shanghai
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../paris/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Paris
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../london/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  London
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../berlin/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Berlin
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../istanbul/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Istanbul
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../constantinople/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Constantinople
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../byzantium/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Byzantium
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../spurious_dragon/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Spurious Dragon
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../tangerine_whistle/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Tangerine Whistle
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../homestead/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Homestead
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../frontier/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Frontier
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../../mpt/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Mpt
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_20" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Reorg
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7_20" id="__nav_7_20_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_20_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_7_20">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Reorg
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Readme
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_depth_matrix/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Depth Matrix
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_fork_boundary_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Fork Boundary Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_20_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Forkchoice Behaviour
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7_20_5" id="__nav_7_20_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_7_20_5_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_7_20_5">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Test Forkchoice Behaviour
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_alternating_canonical_and_depth1_forks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_alternating_canonical_and_depth1_forks</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_fcu_rewind_with_no_finalized</code>
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_fcu_rewind_with_no_finalized</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        test_fcu_rewind_with_no_finalized
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Scenario
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parametrized-test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Parametrized Test Cases
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_fcu_to_unknown_block_is_syncing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_fcu_to_unknown_block_is_syncing</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_forkchoice_state_unchanged_on_invalid_state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_forkchoice_state_unchanged_on_invalid_state</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_forks_going_back_and_forward_in_height/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_forks_going_back_and_forward_in_height</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_head_follows_fcu_regardless_of_length/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_head_follows_fcu_regardless_of_length</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_inconsistent_forkchoice_state/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_inconsistent_forkchoice_state</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_many_siblings_same_parent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_many_siblings_same_parent</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_newpayload_does_not_move_head/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_newpayload_does_not_move_head</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_out_of_order_payload_delivery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_out_of_order_payload_delivery</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_reexecute_payloads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_reexecute_payloads</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_reorg_back_and_forth_between_branches/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_reorg_back_and_forth_between_branches</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_reorg_to_fork_behind_finalized/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_reorg_to_fork_behind_finalized</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_reorg_to_older_canonical_ancestor_and_forward/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_reorg_to_older_canonical_ancestor_and_forward</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_safe_finalized_labels_follow_fcu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_safe_finalized_labels_follow_fcu</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_side_payload_executed_while_rewound/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_side_payload_executed_while_rewound</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../test_valid_and_invalid_forks_with_older_canonical_head/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  <code>test_valid_and_invalid_forks_with_older_canonical_head</code>
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_forkchoice_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Forkchoice Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_invalid_payloads_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test INVALID Payloads Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_payload_building_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Payload Building Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_peer_sync_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Peer Sync Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_selfdestruct_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test SELFDESTRUCT Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+      
+        
+        
+      
+    
+    <li class="md-nav__item md-nav__item--pruned md-nav__item--nested">
+      
+        
+  
+  
+  
+  
+    <a href="../../test_tx_receipts_logs_reorg/" class="md-nav__link">
+      
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Test Tx Receipts Logs Reorg
+
+    
+  </span>
+  
+  
+
+      
+        <span class="md-nav__icon md-icon"></span>
+      
+    </a>
+  
+
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        test_fcu_rewind_with_no_finalized
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Scenario
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parametrized-test-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Parametrized Test Cases
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../../../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../../../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Test Case Reference
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Reorg
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Test Forkchoice Behaviour
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/ethereum/execution-specs/edit/forks/bogota/tests/reorg/test_forkchoice_behaviour.py" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+    <a href="https://github.com/ethereum/execution-specs/blob/forks/bogota/tests/reorg/test_forkchoice_behaviour.py" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-code-2" viewBox="0 0 24 24"><path d="M4 12.15V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2h-3.35"/><path d="M14 2v5a1 1 0 0 0 1 1h5M5 16l-3 3 3 3M9 22l3-3-3-3"/></svg>
+    </a>
+  
+
+
+<h1 id="test_fcu_rewind_with_no_finalized"><code>test_fcu_rewind_with_no_finalized()</code><a class="headerlink" href="#test_fcu_rewind_with_no_finalized" title="Permanent link">&para;</a></h1>
+<p>Documentation for <a href="https://github.com/ethereum/execution-specs/blob/67e8bb5053f4ea7f1d843da1520484170766eb9a/tests/reorg/test_forkchoice_behaviour.py#L775"><code>tests/reorg/test_forkchoice_behaviour.py::test_fcu_rewind_with_no_finalized@67e8bb50</code></a>.</p>
+<div class="admonition example">
+<p class="admonition-title">Generate fixtures for these test cases for Bogota with:</p>
+<div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">fill -v tests/reorg/test_forkchoice_behaviour.py::test_fcu_rewind_with_no_finalized --fork Bogota</span>
+</span></code></pre></div>
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized"></a>
+    <div class="doc doc-contents first">
+
+        <p>Rewind the head to a canonical ancestor while no finalized block is known.</p>
+<p>The no-reorg shortcut is conditional on a known <code>finalizedBlockHash</code> and
+on the head being an ancestor of it; with a zero finalized hash neither
+holds, so the client must apply the rewind, which is within
+<code>MIN_APPLIED_REORG_DEPTH</code>. A VALID answer that leaves the head where it
+was is not legal here.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>tests/reorg/test_forkchoice_behaviour.py</code></summary>
+              <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-775">775</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-776">776</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-777">777</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-778">778</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-779">779</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-780">780</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-781">781</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-782">782</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-783">783</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-784">784</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-785">785</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-786">786</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-787">787</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-788">788</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-789">789</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-790">790</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-791">791</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-792">792</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-793">793</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-794">794</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-795">795</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-796">796</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-797">797</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-798">798</a></span>
+<span class="normal"><a href="#tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-799">799</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-775"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-775" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-775"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">valid_from</span><span class="p">(</span><span class="s2">"Shanghai"</span><span class="p">)</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-776"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-776" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-776"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_fcu_rewind_with_no_finalized</span><span class="p">(</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-777"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-777" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-777"></a>    <span class="n">reorg_test</span><span class="p">:</span> <span class="n">ReorgTestFiller</span><span class="p">,</span> <span class="n">pre</span><span class="p">:</span> <span class="n">Alloc</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-778"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-778" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-778"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-779"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-779" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-779"></a><span class="w">    </span><span class="sd">"""</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-780"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-780" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-780"></a><span class="sd">    Rewind the head to a canonical ancestor while no finalized block is known.</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-781"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-781" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-781"></a>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-782"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-782" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-782"></a><span class="sd">    The no-reorg shortcut is conditional on a known ``finalizedBlockHash`` and</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-783"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-783" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-783"></a><span class="sd">    on the head being an ancestor of it; with a zero finalized hash neither</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-784"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-784" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-784"></a><span class="sd">    holds, so the client must apply the rewind, which is within</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-785"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-785" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-785"></a><span class="sd">    ``MIN_APPLIED_REORG_DEPTH``. A VALID answer that leaves the head where it</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-786"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-786" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-786"></a><span class="sd">    was is not legal here.</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-787"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-787" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-787"></a><span class="sd">    """</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-788"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-788" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-788"></a>    <span class="n">blocks</span><span class="p">,</span> <span class="n">steps</span> <span class="o">=</span> <span class="n">chain</span><span class="p">(</span><span class="n">pre</span><span class="p">,</span> <span class="s2">"a"</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-789"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-789" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-789"></a>    <span class="n">steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-790"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-790" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-790"></a>        <span class="n">ForkchoiceUpdatedStep</span><span class="p">(</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-791"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-791" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-791"></a>            <span class="n">head</span><span class="o">=</span><span class="s2">"a5"</span><span class="p">,</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-792"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-792" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-792"></a>            <span class="n">safe</span><span class="o">=</span><span class="s2">"a5"</span><span class="p">,</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-793"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-793" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-793"></a>            <span class="n">expect</span><span class="o">=</span><span class="n">reorg_outcomes</span><span class="p">(</span><span class="s2">"a5"</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-794"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-794" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-794"></a>            <span class="n">branches</span><span class="o">=</span><span class="p">{</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-795"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-795" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-795"></a>                <span class="s2">"applied"</span><span class="p">:</span> <span class="p">[</span><span class="n">AssertCanonicalStep</span><span class="p">(</span><span class="n">blocks</span><span class="o">=</span><span class="p">{</span><span class="mi">5</span><span class="p">:</span> <span class="s2">"a5"</span><span class="p">,</span> <span class="mi">6</span><span class="p">:</span> <span class="kc">None</span><span class="p">})],</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-796"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-796" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-796"></a>            <span class="p">},</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-797"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-797" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-797"></a>        <span class="p">)</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-798"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-798" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-798"></a>    <span class="p">)</span>
+</span><span id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__span-0-799"><a id="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-799" name="tests.reorg.test_forkchoice_behaviour.test_fcu_rewind_with_no_finalized--source--__codelineno-0-799"></a>    <span class="n">reorg_test</span><span class="p">(</span><span class="n">pre</span><span class="o">=</span><span class="n">pre</span><span class="p">,</span> <span class="n">blocks</span><span class="o">=</span><span class="n">blocks</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="n">steps</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div><h2 id="scenario">Scenario<a class="headerlink" href="#scenario" title="Permanent link">&para;</a></h2>
+<p>Generated from the fixture filled for Bogota: the block DAG, then each step with the outcomes it accepts and, on the right, the DAG as the fixture expects the client to see it after the step. Hashes and most fork-specific values are left out, and the script can differ on other forks; the <a href="../../../../running_tests/test_formats/blockchain_test_engine_reorg/">fixture format</a> explains the steps and outcomes.</p>
+<div class="rg-legend"><span><i class="rg-sw rg-sw--genesis"></i>genesis</span><span><i class="rg-sw rg-sw--engine"></i>sent with <code>newPayload</code></span><span><i class="rg-sw rg-sw--ghost"></i>not sent yet</span><span><i class="rg-sw rg-sw--target"></i>block the step names</span><span><i class="rg-line"></i>chain of the head</span></div>
+
+<div class="rg rg--wide"><div class="rg-dag"><div class="rg-dag-h">Block DAG <span class="rg-sum">8 blocks and 18 steps</span></div><div class="rg-scroll"><svg class="rg-svg" viewBox="0 0 602.9 84" width="602.9" height="84" role="img" aria-label="Block DAG: a1 on genesis, a2 on a1, a3 on a2, a4 on a3, a5 on a4, a6 on a5, a7 on a6, a8 on a7"><path class="rg-e" d="M68.9 34H88.9"/><path class="rg-e" d="M134.9 34H154.9"/><path class="rg-e" d="M200.9 34H220.9"/><path class="rg-e" d="M266.9 34H286.9"/><path class="rg-e" d="M332.9 34H352.9"/><path class="rg-e" d="M398.9 34H418.9"/><path class="rg-e" d="M464.9 34H484.9"/><path class="rg-e" d="M530.9 34H550.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="352.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="418.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="484.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="550.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="243.9" y="38">a3</text><text class="rg-t" x="309.9" y="38">a4</text><text class="rg-t" x="375.9" y="38">a5</text><text class="rg-t" x="441.9" y="38">a6</text><text class="rg-t" x="507.9" y="38">a7</text><text class="rg-t" x="573.9" y="38">a8</text><text class="rg-a" x="37.45" y="80">0</text><text class="rg-a" x="111.9" y="80">1</text><text class="rg-a" x="177.9" y="80">2</text><text class="rg-a" x="243.9" y="80">3</text><text class="rg-a" x="309.9" y="80">4</text><text class="rg-a" x="375.9" y="80">5</text><text class="rg-a" x="441.9" y="80">6</text><text class="rg-a" x="507.9" y="80">7</text><text class="rg-a" x="573.9" y="80">8</text></svg></div></div><ol class="rg-steps"><li class="rg-step"><div class="rg-call"><span class="rg-n">1</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">a1</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 602.9 74" width="602.9" height="74" role="img" aria-label="State after the step: head genesis"><path class="rg-e" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M266.9 34H286.9"/><path class="rg-e rg-e--ghost" d="M332.9 34H352.9"/><path class="rg-e rg-e--ghost" d="M398.9 34H418.9"/><path class="rg-e rg-e--ghost" d="M464.9 34H484.9"/><path class="rg-e rg-e--ghost" d="M530.9 34H550.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="352.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="418.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="484.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="550.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-h" x="37.45" y="17">head</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="243.9" y="38">a3</text><text class="rg-t rg-t--ghost" x="309.9" y="38">a4</text><text class="rg-t rg-t--ghost" x="375.9" y="38">a5</text><text class="rg-t rg-t--ghost" x="441.9" y="38">a6</text><text class="rg-t rg-t--ghost" x="507.9" y="38">a7</text><text class="rg-t rg-t--ghost" x="573.9" y="38">a8</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">2</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a1</b> <span class="rg-sep">·</span> safe <span class="rg-none">zero</span> <span class="rg-sep">·</span> finalized <span class="rg-none">zero</span><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a1</b> <span class="rg-sep">·</span> then latest <b class="rg-l">a1</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 602.9 74" width="602.9" height="74" role="img" aria-label="State after the step: head a1"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M266.9 34H286.9"/><path class="rg-e rg-e--ghost" d="M332.9 34H352.9"/><path class="rg-e rg-e--ghost" d="M398.9 34H418.9"/><path class="rg-e rg-e--ghost" d="M464.9 34H484.9"/><path class="rg-e rg-e--ghost" d="M530.9 34H550.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="352.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="418.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="484.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="550.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-h" x="111.9" y="17">head</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="243.9" y="38">a3</text><text class="rg-t rg-t--ghost" x="309.9" y="38">a4</text><text class="rg-t rg-t--ghost" x="375.9" y="38">a5</text><text class="rg-t rg-t--ghost" x="441.9" y="38">a6</text><text class="rg-t rg-t--ghost" x="507.9" y="38">a7</text><text class="rg-t rg-t--ghost" x="573.9" y="38">a8</text></svg></div></div></li><li class="rg-fold">⋮ steps 3 to 14 repeat the same calls for 6 more blocks, <b class="rg-l">a2</b> to <b class="rg-l">a7</b></li><li class="rg-step"><div class="rg-call"><span class="rg-n">15</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">a8</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">valid</code><span class="rg-o-more">latestValidHash <b class="rg-l">a8</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 602.9 74" width="602.9" height="74" role="img" aria-label="State after the step: head a7"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M266.9 34H286.9"/><path class="rg-e rg-e--canon" d="M332.9 34H352.9"/><path class="rg-e rg-e--canon" d="M398.9 34H418.9"/><path class="rg-e rg-e--canon" d="M464.9 34H484.9"/><path class="rg-e" d="M530.9 34H550.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="352.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="418.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="484.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="550.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="243.9" y="38">a3</text><text class="rg-t" x="309.9" y="38">a4</text><text class="rg-t" x="375.9" y="38">a5</text><text class="rg-t" x="441.9" y="38">a6</text><text class="rg-t" x="507.9" y="38">a7</text><text class="rg-h" x="507.9" y="17">head</text><text class="rg-t" x="573.9" y="38">a8</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">16</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a8</b> <span class="rg-sep">·</span> safe <span class="rg-none">zero</span> <span class="rg-sep">·</span> finalized <span class="rg-none">zero</span><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a8</b> <span class="rg-sep">·</span> then latest <b class="rg-l">a8</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 602.9 74" width="602.9" height="74" role="img" aria-label="State after the step: head a8"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M266.9 34H286.9"/><path class="rg-e rg-e--canon" d="M332.9 34H352.9"/><path class="rg-e rg-e--canon" d="M398.9 34H418.9"/><path class="rg-e rg-e--canon" d="M464.9 34H484.9"/><path class="rg-e rg-e--canon" d="M530.9 34H550.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="352.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="418.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="484.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="550.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="243.9" y="38">a3</text><text class="rg-t" x="309.9" y="38">a4</text><text class="rg-t" x="375.9" y="38">a5</text><text class="rg-t" x="441.9" y="38">a6</text><text class="rg-t" x="507.9" y="38">a7</text><text class="rg-t" x="573.9" y="38">a8</text><text class="rg-h" x="573.9" y="17">head</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">17</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a5</b> <span class="rg-sep">·</span> safe <b class="rg-l">a5</b> <span class="rg-sep">·</span> finalized <span class="rg-none">zero</span><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">a5</b> <span class="rg-sep">·</span> head moved <span class="rg-sep">·</span> then latest <b class="rg-l">a5</b>, safe <b class="rg-l">a5</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 602.9 74" width="602.9" height="74" role="img" aria-label="State after the step: head a5, safe a5"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M266.9 34H286.9"/><path class="rg-e rg-e--canon" d="M332.9 34H352.9"/><path class="rg-e" d="M398.9 34H418.9"/><path class="rg-e" d="M464.9 34H484.9"/><path class="rg-e" d="M530.9 34H550.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="352.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="418.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="484.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="550.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="243.9" y="38">a3</text><text class="rg-t" x="309.9" y="38">a4</text><text class="rg-t" x="375.9" y="38">a5</text><text class="rg-h" x="375.9" y="17">head</text><text class="rg-s" x="375.9" y="58">safe</text><text class="rg-t" x="441.9" y="38">a6</text><text class="rg-t" x="507.9" y="38">a7</text><text class="rg-t" x="573.9" y="38">a8</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">18</span> <code class="rg-m rg-m--rpc">assertCanonical</code> height 5 is <b class="rg-l">a5</b> <span class="rg-sep">·</span> height 6 is <span class="rg-none">none</span></div></li></ol></div>
+
+<h2 id="parametrized-test-cases">Parametrized Test Cases<a class="headerlink" href="#parametrized-test-cases" title="Permanent link">&para;</a></h2>
+<p>This test generates 1 parametrized test case across 6 forks.</p>
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../test_alternating_canonical_and_depth1_forks/" class="md-footer__link md-footer__link--prev" aria-label="Previous: &lt;code&gt;test_alternating_canonical_and_depth1_forks&lt;&#x2f;code&gt;">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                <code>test_alternating_canonical_and_depth1_forks</code>
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../test_fcu_to_unknown_block_is_syncing/" class="md-footer__link md-footer__link--next" aria-label="Next: &lt;code&gt;test_fcu_to_unknown_block_is_syncing&lt;&#x2f;code&gt;">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                <code>test_fcu_to_unknown_block_is_syncing</code>
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright: 2026, Ethereum Community
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      
+<div class="md-progress" data-md-component="progress" role="progressbar" aria-label="Loading"></div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../../../..","features":["content.code.copy","search.suggest","search.highlight","content.tabs.link","navigation.indexes","navigation.instant","navigation.prune","navigation.tabs","navigation.footer","navigation.instant.prefetch","navigation.instant.progress","navigation.path","navigation.top","navigation.tracking","toc.follow","content.tooltips","content.footnote.tooltips","content.code.annotate","search.share","navigation.instant.preview","content.code.select","content.lazy","content.action.edit","content.action.view"],"redirect":null,"search":"../../../../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.d31f0ffa.min.js"></script>
+      
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+      
+        <script src="https://cdn.datatables.net/2.1.7/js/dataTables.min.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.dataTables.js"></script>
+      
+        <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.colVis.min.js"></script>
+      
+        <script src="../../../../vendor/glightbox/glightbox.min.js"></script>
+      
+        <script src="../../../../javascripts/site.js"></script>
+      
+    
+  </body>
+</html>
