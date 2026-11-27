@@ -225,6 +225,12 @@
 
       </a>
 </li>
+
+
+
+
+
+
 </ul>
 </div>
 </nav>
@@ -274,6 +280,11 @@
   </span>
 </a>
 </li>
+
+
+
+
+
 <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
 <input checked="" class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
 <div class="md-nav__link md-nav__container">
@@ -299,6 +310,24 @@
 
             </label>
 <ul class="md-nav__list" data-md-scrollfix="">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <li class="md-nav__item md-nav__item--active md-nav__item--nested">
 <input checked="" class="md-nav__toggle md-toggle" id="__nav_7_20" type="checkbox"/>
 <div class="md-nav__link md-nav__container">
@@ -610,6 +639,7 @@
   </span>
 </a>
 </li>
+
 <li class="md-path__item">
 <a class="md-path__link" href="../../">
 <span class="md-ellipsis">
@@ -648,7 +678,7 @@
 
 
 <h1 id="test_sync_head_from_peer"><code>test_sync_head_from_peer()</code><a class="headerlink" href="#test_sync_head_from_peer" title="Permanent link">&para;</a></h1>
-<p>Documentation for <a href="https://github.com/ethereum/execution-specs/blob/67e8bb5053f4ea7f1d843da1520484170766eb9a/tests/reorg/test_peer_sync_reorg.py#L31"><code>tests/reorg/test_peer_sync_reorg.py::test_sync_head_from_peer@67e8bb50</code></a>.</p>
+<p>Documentation for <a href="https://github.com/ethereum/execution-specs/blob/006626e4f0ea90418b21c933112a6a9cd5d385da/tests/reorg/test_peer_sync_reorg.py#L31"><code>tests/reorg/test_peer_sync_reorg.py::test_sync_head_from_peer@f44e064d</code></a>.</p>
 <div class="admonition example">
 <p class="admonition-title">Generate fixtures for these test cases for Bogota with:</p>
 <div class="language-console highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="go">fill -v tests/reorg/test_peer_sync_reorg.py::test_sync_head_from_peer --fork Bogota</span>
@@ -724,8 +754,8 @@ serves a1..a5, and the client syncs a1..a4 and makes a5 its head.</p>
     </div>
 
 </div><h2 id="scenario">Scenario<a class="headerlink" href="#scenario" title="Permanent link">&para;</a></h2>
-<p>Generated from the fixture filled for Bogota: the block DAG, then each step with the outcomes it accepts and, on the right, the DAG as the fixture expects the client to see it after the step. Hashes and most fork-specific values are left out, and the script can differ on other forks; the <a href="../../../../running_tests/test_formats/blockchain_test_engine_reorg/">fixture format</a> explains the steps and outcomes.</p>
-<div class="rg-legend"><span><i class="rg-sw rg-sw--genesis"></i>genesis</span><span><i class="rg-sw rg-sw--engine"></i>sent with <code>newPayload</code></span><span><i class="rg-sw rg-sw--peer"></i>synced from the devp2p peer</span><span><i class="rg-sw rg-sw--ghost"></i>not sent yet</span><span><i class="rg-sw rg-sw--target"></i>block the step names</span><span><i class="rg-line"></i>chain of the head</span></div>
+<p>Generated from the fixture filled for Bogota: the block DAG, then each step with the outcomes it accepts and, beside or below it, the DAG as the fixture expects the client to see it after the step. Hashes and most fork-specific values are left out, and the script can differ on other forks; the <a href="../../../../running_tests/test_formats/blockchain_test_engine_reorg/">fixture format</a> explains the steps and outcomes.</p>
+<div class="rg-legend"><span><i class="rg-sw rg-sw--genesis"></i>genesis</span><span><i class="rg-sw rg-sw--engine"></i>sent with <code>newPayload</code></span><span><i class="rg-sw rg-sw--peer"></i>synced from the devp2p peer</span><span><i class="rg-sw rg-sw--ghost"></i>not with the client</span><span><i class="rg-sw rg-sw--target"></i>block the step names</span><span><i class="rg-line"></i>chain of the head</span></div>
 
 <div class="rg"><div class="rg-dag"><div class="rg-dag-h">Block DAG <span class="rg-sum">5 blocks and 8 steps</span></div><div class="rg-scroll"><svg class="rg-svg" viewBox="0 0 404.9 84" width="404.9" height="84" role="img" aria-label="Block DAG: a1 on genesis, a2 on a1, a3 on a2, a4 on a3, a5 on a4"><path class="rg-e" d="M68.9 34H88.9"/><path class="rg-e" d="M134.9 34H154.9"/><path class="rg-e" d="M200.9 34H220.9"/><path class="rg-e" d="M266.9 34H286.9"/><path class="rg-e" d="M332.9 34H352.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--peer" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine" x="352.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="243.9" y="38">a3</text><text class="rg-t" x="309.9" y="38">a4</text><text class="rg-t" x="375.9" y="38">a5</text><text class="rg-a" x="37.45" y="80">0</text><text class="rg-a" x="111.9" y="80">1</text><text class="rg-a" x="177.9" y="80">2</text><text class="rg-a" x="243.9" y="80">3</text><text class="rg-a" x="309.9" y="80">4</text><text class="rg-a" x="375.9" y="80">5</text></svg></div></div><ol class="rg-steps"><li class="rg-step"><div class="rg-call"><span class="rg-n">1</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">genesis</b> <span class="rg-sep">·</span> safe <b class="rg-l">genesis</b> <span class="rg-sep">·</span> finalized <b class="rg-l">genesis</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--valid"><b class="rg-o-status">VALID</b> <code class="rg-o-id">applied</code><span class="rg-o-more">latestValidHash <b class="rg-l">genesis</b> <span class="rg-sep">·</span> then latest <b class="rg-l">genesis</b>, safe <b class="rg-l">genesis</b>, finalized <b class="rg-l">genesis</b></span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 404.9 74" width="404.9" height="74" role="img" aria-label="State after the step: head genesis, safe genesis, finalized genesis"><path class="rg-e rg-e--ghost" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M266.9 34H286.9"/><path class="rg-e rg-e--ghost" d="M332.9 34H352.9"/><rect class="rg-b rg-b--genesis rg-b--target" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--ghost" x="352.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-h" x="37.45" y="17">head</text><text class="rg-s" x="37.45" y="58">safe</text><text class="rg-s" x="37.45" y="69">finalized</text><text class="rg-t rg-t--ghost" x="111.9" y="38">a1</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="243.9" y="38">a3</text><text class="rg-t rg-t--ghost" x="309.9" y="38">a4</text><text class="rg-t rg-t--ghost" x="375.9" y="38">a5</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">2</span> <code class="rg-m rg-m--engine">newPayload</code> <b class="rg-l">a5</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--open"><b class="rg-o-status">SYNCING</b> <code class="rg-o-id">syncing</code><span class="rg-o-more">latestValidHash null</span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 404.9 74" width="404.9" height="74" role="img" aria-label="State after the step: head genesis, safe genesis, finalized genesis"><path class="rg-e rg-e--ghost" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M266.9 34H286.9"/><path class="rg-e" d="M332.9 34H352.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="352.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-h" x="37.45" y="17">head</text><text class="rg-s" x="37.45" y="58">safe</text><text class="rg-s" x="37.45" y="69">finalized</text><text class="rg-t rg-t--ghost" x="111.9" y="38">a1</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="243.9" y="38">a3</text><text class="rg-t rg-t--ghost" x="309.9" y="38">a4</text><text class="rg-t" x="375.9" y="38">a5</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">3</span> <code class="rg-m rg-m--engine">forkchoiceUpdated</code> head <b class="rg-l">a5</b> <span class="rg-sep">·</span> safe <b class="rg-l">genesis</b> <span class="rg-sep">·</span> finalized <b class="rg-l">genesis</b><div class="rg-expect"><span class="rg-expect-h">accepts</span><ul class="rg-os"><li class="rg-o rg-o--open"><b class="rg-o-status">SYNCING</b> <code class="rg-o-id">syncing</code><span class="rg-o-more">latestValidHash null</span></li></ul></div></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 404.9 74" width="404.9" height="74" role="img" aria-label="State after the step: head genesis, safe genesis, finalized genesis"><path class="rg-e rg-e--ghost" d="M68.9 34H88.9"/><path class="rg-e rg-e--ghost" d="M134.9 34H154.9"/><path class="rg-e rg-e--ghost" d="M200.9 34H220.9"/><path class="rg-e rg-e--ghost" d="M266.9 34H286.9"/><path class="rg-e" d="M332.9 34H352.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer rg-b--ghost" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="352.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-h" x="37.45" y="17">head</text><text class="rg-s" x="37.45" y="58">safe</text><text class="rg-s" x="37.45" y="69">finalized</text><text class="rg-t rg-t--ghost" x="111.9" y="38">a1</text><text class="rg-t rg-t--ghost" x="177.9" y="38">a2</text><text class="rg-t rg-t--ghost" x="243.9" y="38">a3</text><text class="rg-t rg-t--ghost" x="309.9" y="38">a4</text><text class="rg-t" x="375.9" y="38">a5</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">4</span> <code class="rg-m rg-m--rpc">assertHead</code> latest is <b class="rg-l">genesis</b></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">5</span> <code class="rg-m rg-m--rpc">servePeer</code> a devp2p peer serves the chain from genesis to <b class="rg-l">a5</b></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">6</span> <code class="rg-m rg-m--rpc">awaitHead</code> the client syncs from the peer until latest is <b class="rg-l">a5</b></div><div class="rg-frames"><div class="rg-frame"><svg class="rg-svg rg-svg--frame" viewBox="0 0 404.9 74" width="404.9" height="74" role="img" aria-label="State after the step: head a5, safe genesis, finalized genesis"><path class="rg-e rg-e--canon" d="M68.9 34H88.9"/><path class="rg-e rg-e--canon" d="M134.9 34H154.9"/><path class="rg-e rg-e--canon" d="M200.9 34H220.9"/><path class="rg-e rg-e--canon" d="M266.9 34H286.9"/><path class="rg-e rg-e--canon" d="M332.9 34H352.9"/><rect class="rg-b rg-b--genesis" x="6" y="21" width="62.9" height="26" rx="7"></rect><rect class="rg-b rg-b--peer" x="88.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer" x="154.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer" x="220.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--peer" x="286.9" y="21" width="46" height="26" rx="7"></rect><rect class="rg-b rg-b--engine rg-b--target" x="352.9" y="21" width="46" height="26" rx="7"></rect><text class="rg-t" x="37.45" y="38">genesis</text><text class="rg-s" x="37.45" y="58">safe</text><text class="rg-s" x="37.45" y="69">finalized</text><text class="rg-t" x="111.9" y="38">a1</text><text class="rg-t" x="177.9" y="38">a2</text><text class="rg-t" x="243.9" y="38">a3</text><text class="rg-t" x="309.9" y="38">a4</text><text class="rg-t" x="375.9" y="38">a5</text><text class="rg-h" x="375.9" y="17">head</text></svg></div></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">7</span> <code class="rg-m rg-m--rpc">assertCanonical</code> height 1 is <b class="rg-l">a1</b> <span class="rg-sep">·</span> height 2 is <b class="rg-l">a2</b> <span class="rg-sep">·</span> height 3 is <b class="rg-l">a3</b> <span class="rg-sep">·</span> height 4 is <b class="rg-l">a4</b> <span class="rg-sep">·</span> height 5 is <b class="rg-l">a5</b></div></li><li class="rg-step"><div class="rg-call"><span class="rg-n">8</span> <code class="rg-m rg-m--rpc">assertState</code> at latest: <code>0xc0f6…992b</code> balance 5</div></li></ol></div>
 
